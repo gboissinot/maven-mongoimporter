@@ -1,4 +1,6 @@
-package com.boissinot.maven.util.mongoimport;
+package com.boissinot.maven.util.mongoimport.service;
+
+import com.boissinot.maven.util.mongoimport.domain.ArtifactObj;
 
 /**
  * @author Gregory Boissinot

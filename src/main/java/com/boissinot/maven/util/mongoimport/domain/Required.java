@@ -1,4 +1,4 @@
-package com.boissinot.maven.util.mongoimport;
+package com.boissinot.maven.util.mongoimport.domain;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

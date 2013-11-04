@@ -1,5 +1,8 @@
-package com.boissinot.maven.util.mongoimport;
+package com.boissinot.maven.util.mongoimport.launch;
 
+import com.boissinot.maven.util.mongoimport.domain.ArtifactObj;
+import com.boissinot.maven.util.mongoimport.service.ArtifactObjBuilderService;
+import com.boissinot.maven.util.mongoimport.service.MavenIndexerRetriever;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.IndexSearcher;

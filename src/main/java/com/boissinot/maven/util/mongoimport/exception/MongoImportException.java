@@ -1,4 +1,4 @@
-package com.boissinot.maven.util.mongoimport;
+package com.boissinot.maven.util.mongoimport.exception;
 
 /**
  * @author Gregory Boissinot

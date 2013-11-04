@@ -1,4 +1,4 @@
-package com.boissinot.maven.util.mongoimport;
+package com.boissinot.maven.util.mongoimport.service;
 
 import org.apache.maven.index.Indexer;
 import org.apache.maven.index.context.IndexCreator;

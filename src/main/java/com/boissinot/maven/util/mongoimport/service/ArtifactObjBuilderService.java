@@ -1,5 +1,6 @@
-package com.boissinot.maven.util.mongoimport;
+package com.boissinot.maven.util.mongoimport.service;
 
+import com.boissinot.maven.util.mongoimport.domain.ArtifactObj;
 import org.apache.maven.index.ArtifactInfo;
 
 import java.util.Date;

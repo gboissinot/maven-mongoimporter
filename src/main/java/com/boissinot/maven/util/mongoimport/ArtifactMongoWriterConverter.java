@@ -1,5 +1,8 @@
 package com.boissinot.maven.util.mongoimport;
 
+import com.boissinot.maven.util.mongoimport.domain.ArtifactObj;
+import com.boissinot.maven.util.mongoimport.domain.Required;
+import com.boissinot.maven.util.mongoimport.exception.MongoImportException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.springframework.core.convert.converter.Converter;

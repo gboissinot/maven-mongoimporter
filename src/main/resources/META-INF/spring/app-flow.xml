@@ -29,7 +29,7 @@
 
     </int:chain>
 
-    <bean id="artifactFilter" class="com.boissinot.maven.util.mongoimport.ArtifactFilter"/>
+    <bean id="artifactFilter" class="com.boissinot.maven.util.mongoimport.service.ArtifactFilter"/>
 
     <int:poller default="true"
                 fixed-delay="1"
