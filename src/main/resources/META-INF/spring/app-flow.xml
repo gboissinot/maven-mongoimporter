@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-mongo="http://www.springframework.org/schema/integration/mongodb"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/integration
+        http://www.springframework.org/schema/integration/spring-integration.xsd
+        http://www.springframework.org/schema/integration/mongodb
+        http://www.springframework.org/schema/integration/mongodb/spring-integration-mongodb.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <int:channel id="workingQueue">
+        <int:queue capacity="500"/>
+    </int:channel>
+    <int:channel id="rejectionQueue"/>
+
+    <int:chain input-channel="workingQueue">
+        <int:filter ref="artifactFilter"
+                    discard-channel="rejectionQueue"/>
+        <int-mongo:outbound-channel-adapter
+                mongodb-factory="mongoDbFactory"
+                collection-name="artifacts"/>
+
+    </int:chain>
+
+    <bean id="artifactFilter" class="com.boissinot.maven.util.mongoimport.ArtifactFilter"/>
+
+    <int:poller default="true"
+                fixed-delay="1"
+                time-unit="SECONDS"
+                max-messages-per-poll="100"/>
+
+    <task:executor id="pool" pool-size="10"/>
+
+</beans>
