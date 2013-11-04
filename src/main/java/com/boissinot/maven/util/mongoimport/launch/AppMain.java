@@ -1,6 +1,5 @@
 package com.boissinot.maven.util.mongoimport.launch;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -9,7 +8,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class AppMain {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(JavaConfig.class);
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        applicationContext.getEnvironment().setActiveProfiles("remote");
+        applicationContext.register(JavaConfig.class);
+        applicationContext.refresh();
         final ImportService importService = applicationContext.getBean(ImportService.class);
         importService.importArtifacts();
     }
