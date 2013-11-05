@@ -18,20 +18,26 @@ import org.springframework.integration.support.MessageBuilder;
  */
 public class ImportService {
 
-    private MessageChannel inputChannel;
+    private final MessageChannel inputChannel;
+    private final ArtifactObjBuilderService builderService;
+    private final MavenIndexerRetriever mavenIndexerRetriever;
+    private final String[] repoURLs;
 
-    private ArtifactObjBuilderService builderService;
-
-    private MavenIndexerRetriever mavenIndexerRetriever;
-
-    public ImportService(MessageChannel inputChannel, ArtifactObjBuilderService builderService, MavenIndexerRetriever mavenIndexerRetriever) {
+    public ImportService(MessageChannel inputChannel, ArtifactObjBuilderService builderService, MavenIndexerRetriever mavenIndexerRetriever, String[] repoURLs) {
         this.inputChannel = inputChannel;
         this.builderService = builderService;
         this.mavenIndexerRetriever = mavenIndexerRetriever;
+        this.repoURLs = repoURLs;
     }
 
     public void importArtifacts() throws Exception {
-        IndexingContext repoMavenContext = mavenIndexerRetriever.getMavenIndex();
+        for (String repoURL : repoURLs) {
+            importArtifacts(repoURL);
+        }
+    }
+
+    private void importArtifacts(String repoURL) throws Exception {
+        IndexingContext repoMavenContext = mavenIndexerRetriever.getMavenIndex(repoURL);
         final IndexSearcher searcher = repoMavenContext.acquireIndexSearcher();
         final IndexReader ir = searcher.getIndexReader();
         for (int i = 0; i < ir.maxDoc(); i++) {
@@ -42,7 +48,7 @@ public class ImportService {
                     final ArtifactInfo ai = IndexUtils.constructArtifactInfo(doc, repoMavenContext);
                     final ArtifactObj artifactObj = builderService.buildArtifactObj(ai);
                     //TODO Use Spring AOP
-                    System.out.println("Inserting...");
+                    System.out.println("Inserting..." + artifactObj);
                     final Message<ArtifactObj> artifactObjMessage = MessageBuilder.withPayload(artifactObj).build();
                     inputChannel.send(artifactObjMessage);
                 }

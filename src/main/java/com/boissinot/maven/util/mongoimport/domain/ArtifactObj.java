@@ -46,96 +46,48 @@ public class ArtifactObj {
     @Field("fsize")
     private long fileSize;
 
-    public String getOrganisation() {
-        return organisation;
-    }
-
     public void setOrganisation(String organisation) {
         this.organisation = organisation;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
     }
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Date getPublicationDate() {
-        return publicationDate;
-    }
-
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
-    }
-
-    public String getSha1() {
-        return sha1;
     }
 
     public void setSha1(String sha1) {
         this.sha1 = sha1;
     }
 
-    public String getMd5() {
-        return md5;
-    }
-
     public void setMd5(String md5) {
         this.md5 = md5;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getFileExtension() {
-        return fileExtension;
-    }
-
     public void setFileExtension(String fileExtension) {
         this.fileExtension = fileExtension;
-    }
-
-    public long getFileSize() {
-        return fileSize;
     }
 
     public void setFileSize(long fileSize) {
@@ -148,15 +100,7 @@ public class ArtifactObj {
                 "organisation='" + organisation + '\'' +
                 ", name='" + name + '\'' +
                 ", version='" + version + '\'' +
-                ", status='" + status + '\'' +
                 ", type='" + type + '\'' +
-                ", creationDate=" + creationDate +
-                ", publicationDate=" + publicationDate +
-                ", sha1='" + sha1 + '\'' +
-                ", md5='" + md5 + '\'' +
-                ", description='" + description + '\'' +
-                ", fileExtension='" + fileExtension + '\'' +
-                ", fileSize=" + fileSize +
                 '}';
     }
 }

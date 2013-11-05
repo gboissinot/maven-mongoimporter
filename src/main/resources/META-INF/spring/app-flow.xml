@@ -17,27 +17,26 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-
     <int:channel id="workingQueue">
         <int:queue capacity="500"/>
     </int:channel>
     <int:channel id="rejectionQueue"/>
 
     <int:chain input-channel="workingQueue">
-        <int:filter ref="artifactFilter"
-                    discard-channel="rejectionQueue"/>
-        <int-mongo:outbound-channel-adapter
-                mongodb-factory="mongoDbFactory"
-                collection-name="artifacts"/>
-
-    </int:chain>
-
-    <bean id="artifactFilter" class="com.boissinot.maven.util.mongoimport.service.ArtifactFilter"/>
-
-    <int:poller default="true"
+        <int:poller
                 fixed-delay="1"
                 time-unit="SECONDS"
                 max-messages-per-poll="100"/>
+        <int:filter
+                ref="artifactFilter"
+                discard-channel="rejectionQueue"/>
+        <int-mongo:outbound-channel-adapter
+                mongo-converter="mappingConverter"
+                mongodb-factory="mongoDbFactory"
+                collection-name="artifacts"/>
+    </int:chain>
+
+    <bean id="artifactFilter" class="com.boissinot.maven.util.mongoimport.service.ArtifactFilter"/>
 
     <task:executor id="pool" pool-size="10"/>
 

@@ -1,4 +1,4 @@
-package com.boissinot.maven.util.mongoimport;
+package com.boissinot.maven.util.mongoimport.mongo;
 
 import com.boissinot.maven.util.mongoimport.domain.ArtifactObj;
 import com.boissinot.maven.util.mongoimport.domain.Required;

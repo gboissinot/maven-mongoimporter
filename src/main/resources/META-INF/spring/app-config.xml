@@ -10,10 +10,9 @@
             <bean class="com.boissinot.maven.util.mongoimport.service.ArtifactObjBuilderService"/>
         </constructor-arg>
         <constructor-arg>
-            <bean class="com.boissinot.maven.util.mongoimport.service.MavenIndexerRetriever">
-                <constructor-arg value="${repo.url}"/>
-            </bean>
+            <bean class="com.boissinot.maven.util.mongoimport.service.MavenIndexerRetriever"/>
         </constructor-arg>
+        <constructor-arg value="${repo.urls}"/>
     </bean>
 
 </beans>
