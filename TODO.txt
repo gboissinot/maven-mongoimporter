@@ -1,0 +1,3 @@
+- Ajout d'un système d'ordre pour l'artefact
+- Spring AOP pour les log
+- Ajout Package info
