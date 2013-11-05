@@ -11,6 +11,6 @@ public class ArtifactFilter {
     @Filter
     @SuppressWarnings("unused")
     public boolean isValidArtifact(ArtifactObj artifactObj) {
-        return true;
+        return ("pom".equals(artifactObj.getFileExtension())) ? false : true;
     }
 }

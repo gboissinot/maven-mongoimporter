@@ -30,6 +30,7 @@
         <int:filter
                 ref="artifactFilter"
                 discard-channel="rejectionQueue"/>
+        <int:transformer expression="@artifactEnricher.enrich(payload, headers['repo.url'])"/>
         <int-mongo:outbound-channel-adapter
                 mongo-converter="mappingConverter"
                 mongodb-factory="mongoDbFactory"
@@ -37,6 +38,7 @@
     </int:chain>
 
     <bean id="artifactFilter" class="com.boissinot.maven.util.mongoimport.service.ArtifactFilter"/>
+    <bean id="artifactEnricher" class="com.boissinot.maven.util.mongoimport.service.ArtifactEnricher"/>
 
     <task:executor id="pool" pool-size="10"/>
 

@@ -48,8 +48,12 @@ public class ImportService {
                     final ArtifactInfo ai = IndexUtils.constructArtifactInfo(doc, repoMavenContext);
                     final ArtifactObj artifactObj = builderService.buildArtifactObj(ai);
                     //TODO Use Spring AOP
-                    System.out.println("Inserting..." + artifactObj);
-                    final Message<ArtifactObj> artifactObjMessage = MessageBuilder.withPayload(artifactObj).build();
+                    System.out.println("Inserting... " + artifactObj);
+                    final Message<ArtifactObj> artifactObjMessage =
+                            MessageBuilder
+                                    .withPayload(artifactObj)
+                                    .setHeader("repo.url", repoURL)
+                                    .build();
                     inputChannel.send(artifactObjMessage);
                 }
             }

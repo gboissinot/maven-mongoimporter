@@ -25,6 +25,9 @@ public class ArtifactObj {
 
     private String type;
 
+    @Field("is3rdParty")
+    private boolean isThirdParty;
+
     @Required
     @Field("creatdate")
     private Date creationDate;
@@ -45,6 +48,58 @@ public class ArtifactObj {
 
     @Field("fsize")
     private long fileSize;
+
+    public String getOrganisation() {
+        return organisation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public String getSha1() {
+        return sha1;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public boolean isThirdParty() {
+        return isThirdParty;
+    }
 
     public void setOrganisation(String organisation) {
         this.organisation = organisation;
@@ -92,6 +147,10 @@ public class ArtifactObj {
 
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public void setThirdParty(boolean thirdParty) {
+        isThirdParty = thirdParty;
     }
 
     @Override
