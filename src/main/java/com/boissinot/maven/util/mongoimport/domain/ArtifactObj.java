@@ -13,41 +13,55 @@ public class ArtifactObj {
 
     @Required
     @Field("org")
+    @Order(1)
     private String organisation;
 
     @Required
+    @Order(2)
     private String name;
 
+    @Order(3)
     private String version;
 
     @Required
+    @Order(4)
     private String status;
 
+    @Order(5)
     private String type;
 
     @Field("is3rdParty")
+    @Order(6)
     private boolean isThirdParty;
 
     @Required
     @Field("creatdate")
+    @Order(7)
     private Date creationDate;
 
     @Required
     @Field("pubdate")
+    @Order(8)
     private Date publicationDate;
 
+    @Order(9)
     private String sha1;
 
-    private String md5;
-
     @Field("desc")
+    @Order(11)
     private String description;
 
     @Field("fextension")
+    @Order(12)
     private String fileExtension;
 
     @Field("fsize")
+    @Order(13)
     private long fileSize;
+
+    @Order(10)
+    private String md5;
+
 
     public String getOrganisation() {
         return organisation;
