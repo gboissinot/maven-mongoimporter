@@ -1,8 +1,8 @@
-package com.boissinot.maven.util.mongoimport.mongo;
+package com.boissinot.maven.util.mongoimport.service.mongodb;
 
-import com.boissinot.maven.util.mongoimport.domain.ArtifactObj;
 import com.boissinot.maven.util.mongoimport.domain.Order;
 import com.boissinot.maven.util.mongoimport.domain.Required;
+import com.boissinot.maven.util.mongoimport.domain.mongodb.MongoDBArtifactDocument;
 import com.boissinot.maven.util.mongoimport.exception.MongoImportException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -15,27 +15,9 @@ import java.util.TreeMap;
 /**
  * @author Gregory Boissinot
  */
-public class ArtifactMongoWriterConverter implements Converter<ArtifactObj, DBObject> {
+public class ArtifactMongoWriterConverter implements Converter<MongoDBArtifactDocument, DBObject> {
 
-    private class MongoObjElement {
-        private String fieldName;
-        private Object filedValue;
-
-        private MongoObjElement(String fieldName, Object filedValue) {
-            this.fieldName = fieldName;
-            this.filedValue = filedValue;
-        }
-
-        public String getFieldName() {
-            return fieldName;
-        }
-
-        public Object getFiledValue() {
-            return filedValue;
-        }
-    }
-
-    public DBObject convert(ArtifactObj artifactObj) {
+    public DBObject convert(MongoDBArtifactDocument artifactObj) {
         DBObject dbo = new BasicDBObject();
 
         try {
@@ -51,6 +33,7 @@ public class ArtifactMongoWriterConverter implements Converter<ArtifactObj, DBOb
                 Object targetFieldValue = field.get(artifactObj);
 
                 final Order orderFieldAnnotation = field.getAnnotation(Order.class);
+                //TODO CHECK NULL
                 int orderFieldNumber = orderFieldAnnotation.value();
                 if ((field.getAnnotation(Required.class) != null) || (targetFieldValue != null)) {
                     elementsMap.put(orderFieldNumber, new MongoObjElement(targetFieldName, targetFieldValue));
@@ -67,5 +50,15 @@ public class ArtifactMongoWriterConverter implements Converter<ArtifactObj, DBOb
         }
 
         return dbo;
+    }
+
+    private class MongoObjElement {
+        private String fieldName;
+        private Object filedValue;
+
+        private MongoObjElement(String fieldName, Object filedValue) {
+            this.fieldName = fieldName;
+            this.filedValue = filedValue;
+        }
     }
 }

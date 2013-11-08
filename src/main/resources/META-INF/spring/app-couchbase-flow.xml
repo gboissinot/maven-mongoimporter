@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/integration
+        http://www.springframework.org/schema/integration/spring-integration.xsd
+        http://www.springframework.org/schema/integration/stream
+        http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <int:channel id="workingQueueCouchbase">
+        <int:queue capacity="500"/>
+    </int:channel>
+    <int:channel id="rejectionQueueCouchbase"/>
+
+    <int:chain input-channel="workingQueueCouchbase">
+        <int:poller
+                fixed-delay="1"
+                time-unit="SECONDS"
+                max-messages-per-poll="100" task-executor="pool"/>
+        <int:filter
+                ref="pomArtifactFilter"
+                discard-channel="rejectionQueueCouchbase"/>
+        <int:service-activator ref="couchbaseRepository"/>
+    </int:chain>
+    <task:executor id="pool" pool-size="10"/>
+
+    <bean id="pomArtifactFilter" class="com.boissinot.maven.util.mongoimport.service.couchbase.integration.POMArtifactFilter"/>
+    <bean id="couchbaseRepository" class="com.boissinot.maven.util.mongoimport.repository.couchbase.CouchbaseRepository">
+        <constructor-arg ref="couchbaseTemplate"/>
+    </bean>
+
+    <int-stream:stdout-channel-adapter
+            channel="rejectionQueueCouchbase"
+            append-newline="true"/>
+
+    <int-stream:stdout-channel-adapter
+            channel="errorChannel"
+            append-newline="true"/>
+
+</beans>

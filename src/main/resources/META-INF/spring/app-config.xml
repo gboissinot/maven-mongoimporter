@@ -5,14 +5,26 @@
         http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean class="com.boissinot.maven.util.mongoimport.launch.ImportService">
-        <constructor-arg ref="workingQueue"/>
-        <constructor-arg>
-            <bean class="com.boissinot.maven.util.mongoimport.service.ArtifactObjBuilderService"/>
-        </constructor-arg>
-        <constructor-arg>
+        <constructor-arg name="mavenIndexerRetriever">
             <bean class="com.boissinot.maven.util.mongoimport.service.MavenIndexerRetriever"/>
         </constructor-arg>
-        <constructor-arg value="${repo.urls}"/>
+        <constructor-arg name="repoURLs" value="${repo.urls}"/>
+        <constructor-arg name="couchbaseService" ref="couchbaseService"/>
+        <constructor-arg name="mongoDBService" ref="mongoDBService"/>
+    </bean>
+
+    <bean id="couchbaseService" class="com.boissinot.maven.util.mongoimport.service.couchbase.CouchbaseService">
+        <constructor-arg name="inputChannel" ref="workingQueueCouchbase"/>
+        <constructor-arg name="builderService">
+            <bean class="com.boissinot.maven.util.mongoimport.service.couchbase.CouchbaseDocumentBuilderService"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="mongoDBService" class="com.boissinot.maven.util.mongoimport.service.mongodb.MongoDBService">
+        <constructor-arg name="inputChannel" ref="workingQueueMongoDB"/>
+        <constructor-arg name="builderService">
+            <bean class="com.boissinot.maven.util.mongoimport.service.mongodb.MongoDBDocumentBuilderService"/>
+        </constructor-arg>
     </bean>
 
 </beans>

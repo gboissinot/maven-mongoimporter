@@ -1,33 +1,25 @@
 package com.boissinot.maven.util.mongoimport.launch;
 
-import com.boissinot.maven.util.mongoimport.domain.ArtifactObj;
-import com.boissinot.maven.util.mongoimport.service.ArtifactObjBuilderService;
 import com.boissinot.maven.util.mongoimport.service.MavenIndexerRetriever;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.maven.index.ArtifactInfo;
-import org.apache.maven.index.context.IndexUtils;
+import com.boissinot.maven.util.mongoimport.service.couchbase.CouchbaseService;
+import com.boissinot.maven.util.mongoimport.service.mongodb.MongoDBService;
 import org.apache.maven.index.context.IndexingContext;
-import org.springframework.integration.Message;
-import org.springframework.integration.MessageChannel;
-import org.springframework.integration.support.MessageBuilder;
 
 /**
  * @author Gregory Boissinot
  */
 public class ImportService {
 
-    private final MessageChannel inputChannel;
-    private final ArtifactObjBuilderService builderService;
-    private final MavenIndexerRetriever mavenIndexerRetriever;
     private final String[] repoURLs;
+    private final MavenIndexerRetriever mavenIndexerRetriever;
+    private final CouchbaseService couchbaseService;
+    private final MongoDBService mongoDBService;
 
-    public ImportService(MessageChannel inputChannel, ArtifactObjBuilderService builderService, MavenIndexerRetriever mavenIndexerRetriever, String[] repoURLs) {
-        this.inputChannel = inputChannel;
-        this.builderService = builderService;
+    public ImportService(MavenIndexerRetriever mavenIndexerRetriever, String[] repoURLs, CouchbaseService couchbaseService, MongoDBService mongoDBService) {
         this.mavenIndexerRetriever = mavenIndexerRetriever;
         this.repoURLs = repoURLs;
+        this.couchbaseService = couchbaseService;
+        this.mongoDBService = mongoDBService;
     }
 
     public void importArtifacts() throws Exception {
@@ -38,26 +30,17 @@ public class ImportService {
 
     private void importArtifacts(String repoURL) throws Exception {
         IndexingContext repoMavenContext = mavenIndexerRetriever.getMavenIndex(repoURL);
-        final IndexSearcher searcher = repoMavenContext.acquireIndexSearcher();
-        final IndexReader ir = searcher.getIndexReader();
-        for (int i = 0; i < ir.maxDoc(); i++) {
-            if (!ir.isDeleted(i)) {
-                final Document doc = ir.document(i);
-                String metadata = doc.get("u");
-                if (metadata != null) {
-                    final ArtifactInfo ai = IndexUtils.constructArtifactInfo(doc, repoMavenContext);
-                    final ArtifactObj artifactObj = builderService.buildArtifactObj(ai);
-                    //TODO Use Spring AOP
-                    System.out.println("Inserting... " + artifactObj);
-                    final Message<ArtifactObj> artifactObjMessage =
-                            MessageBuilder
-                                    .withPayload(artifactObj)
-                                    .setHeader("repo.url", repoURL)
-                                    .build();
-                    inputChannel.send(artifactObjMessage);
-                }
-            }
-        }
-    }
 
+        System.out.println("-----------------------");
+        System.out.println(" INSERT INTO CACHE WITH COUCHBASE");
+        couchbaseService.insert(repoMavenContext);
+        System.out.println("-----------------------");
+        System.out.println();
+        System.out.println();
+
+        System.out.println("-----------------------");
+        System.out.println(" PERSIST WITH MONGODB");
+        mongoDBService.insert(repoMavenContext, repoURL);
+        System.out.println("-----------------------");
+    }
 }
