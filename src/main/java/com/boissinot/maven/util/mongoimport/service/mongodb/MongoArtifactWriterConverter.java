@@ -15,7 +15,7 @@ import java.util.TreeMap;
 /**
  * @author Gregory Boissinot
  */
-public class ArtifactMongoWriterConverter implements Converter<MongoDBArtifactDocument, DBObject> {
+public class MongoArtifactWriterConverter implements Converter<MongoDBArtifactDocument, DBObject> {
 
     public DBObject convert(MongoDBArtifactDocument artifactObj) {
         DBObject dbo = new BasicDBObject();

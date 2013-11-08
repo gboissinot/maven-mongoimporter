@@ -31,7 +31,7 @@ public class MetadataArtifactTransformer {
                 artifactObj.getStatus(),
                 "sources"));
         //query.setIncludeDocs(true);
-        query.setDebug(true);
+        //query.setDebug(true);
 
         //System.out.println("QUERY:" + query);
 

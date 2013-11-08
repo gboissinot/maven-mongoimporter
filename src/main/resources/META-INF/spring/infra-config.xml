@@ -17,7 +17,7 @@
     <mongo:mapping-converter id="mappingConverter">
         <mongo:custom-converters>
             <mongo:converter>
-                <bean class="com.boissinot.maven.util.mongoimport.service.mongodb.ArtifactMongoWriterConverter"/>
+                <bean class="com.boissinot.maven.util.mongoimport.service.mongodb.MongoArtifactWriterConverter"/>
             </mongo:converter>
         </mongo:custom-converters>
     </mongo:mapping-converter>

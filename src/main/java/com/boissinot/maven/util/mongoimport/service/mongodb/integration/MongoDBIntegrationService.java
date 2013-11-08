@@ -1,6 +1,7 @@
-package com.boissinot.maven.util.mongoimport.service.couchbase;
+package com.boissinot.maven.util.mongoimport.service.mongodb.integration;
 
-import com.boissinot.maven.util.mongoimport.domain.couchbase.CouchbaseArtifactDocument;
+import com.boissinot.maven.util.mongoimport.domain.mongodb.MongoDBArtifactDocument;
+import com.boissinot.maven.util.mongoimport.service.mongodb.MongoDBDocumentBuilderService;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.IndexSearcher;
@@ -14,17 +15,17 @@ import org.springframework.integration.support.MessageBuilder;
 /**
  * @author Gregory Boissinot
  */
-public class CouchbaseService {
+public class MongoDBIntegrationService {
 
     private final MessageChannel inputChannel;
-    private final CouchbaseDocumentBuilderService builderService;
+    private final MongoDBDocumentBuilderService builderService;
 
-    public CouchbaseService(MessageChannel inputChannel, CouchbaseDocumentBuilderService builderService) {
+    public MongoDBIntegrationService(MessageChannel inputChannel, MongoDBDocumentBuilderService builderService) {
         this.inputChannel = inputChannel;
         this.builderService = builderService;
     }
 
-    public void insert(IndexingContext repoMavenContext) throws Exception {
+    public void insert(IndexingContext repoMavenContext, String repoURL) throws Exception {
         final IndexSearcher searcher = repoMavenContext.acquireIndexSearcher();
         final IndexReader ir = searcher.getIndexReader();
         for (int i = 0; i < ir.maxDoc(); i++) {
@@ -33,11 +34,12 @@ public class CouchbaseService {
                 String metadata = doc.get("u");
                 if (metadata != null) {
                     final ArtifactInfo ai = IndexUtils.constructArtifactInfo(doc, repoMavenContext);
-                    final CouchbaseArtifactDocument artifactObj = builderService.buildArtifactObj(ai, i);
-                    System.out.println("Inserting in Couchbase ... " + artifactObj);
-                    final Message<CouchbaseArtifactDocument> artifactObjMessage =
+                    final MongoDBArtifactDocument artifactObj = builderService.buildArtifactObj(ai);
+                    System.out.println("Processing artifact with MongoDB and SI... " + artifactObj);
+                    final Message<MongoDBArtifactDocument> artifactObjMessage =
                             MessageBuilder
                                     .withPayload(artifactObj)
+                                    .setHeader("repo.url", repoURL)
                                     .build();
                     inputChannel.send(artifactObjMessage);
                 }
