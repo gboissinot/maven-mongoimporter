@@ -1,0 +1,28 @@
+var map_count= function (){
+ var key = {
+    org: this.org,
+    name: this.name,
+    type: this.type,
+    status: this.status
+ };
+ emit (key , {count:1})
+}
+var reduce_sum = function(key, values){
+     var sum=0;
+     values.forEach(function(value) { sum += value['count']; })
+     return {count:sum};
+ }
+
+var map_version= function (){
+ var key = {
+    org: this.org,
+    name: this.name,
+    type: this.type,
+    status: this.status
+ };
+ emit (key , this.version)
+}
+
+var reduce_version = function(key, values){
+    return {count:1};
+}
