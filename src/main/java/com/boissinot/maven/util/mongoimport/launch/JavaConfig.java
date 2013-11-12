@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource({
         "META-INF/spring/infra-config.xml",
         "META-INF/spring/app-config.xml",
+        "META-INF/spring/common-si.xml",
         "META-INF/spring/app-couchbase-flow.xml",
         "META-INF/spring/app-mongodb-flow.xml"
 })

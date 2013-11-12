@@ -22,14 +22,14 @@
     </bean>
 
     <bean id="couchbaseIntegrationService" class="com.boissinot.maven.util.mongoimport.service.couchbase.integration.CouchbaseIntegrationService">
-        <constructor-arg name="inputChannel" ref="workingQueueCouchbase"/>
+        <constructor-arg name="inputChannel" ref="workingCouchbaseChannel"/>
         <constructor-arg name="builderService">
             <bean class="com.boissinot.maven.util.mongoimport.service.couchbase.CouchbaseDocumentBuilderService"/>
         </constructor-arg>
     </bean>
 
     <bean id="mongoDBIntegrationService" class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.MongoDBIntegrationService">
-        <constructor-arg name="inputChannel" ref="workingQueueMongoDB"/>
+        <constructor-arg name="inputChannel" ref="workingMongoDBChannel"/>
         <constructor-arg name="builderService">
             <bean class="com.boissinot.maven.util.mongoimport.service.mongodb.MongoDBDocumentBuilderService"/>
         </constructor-arg>

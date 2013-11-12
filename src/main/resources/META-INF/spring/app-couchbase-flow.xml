@@ -14,34 +14,29 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <int:channel id="workingQueueCouchbase">
-        <int:queue capacity="500"/>
+    <int:channel id="workingCouchbaseChannel">
+        <int:dispatcher task-executor="poolThreadCouchbase"/>
     </int:channel>
-    <int:channel id="rejectionQueueCouchbase"/>
+    <int:channel id="rejectionCouchbaseChannel"/>
 
-    <int:chain input-channel="workingQueueCouchbase">
-        <int:poller
-                fixed-delay="1"
-                time-unit="SECONDS"
-                max-messages-per-poll="100" task-executor="pool"/>
+    <int:chain input-channel="workingCouchbaseChannel">
         <int:filter
                 ref="pomArtifactFilter"
-                discard-channel="rejectionQueueCouchbase"/>
+                discard-channel="rejectionCouchbaseChannel"/>
         <int:service-activator ref="couchbaseRepository"/>
     </int:chain>
-    <task:executor id="pool" pool-size="10"/>
+    <task:executor id="poolThreadCouchbase" pool-size="10"/>
 
-    <bean id="pomArtifactFilter" class="com.boissinot.maven.util.mongoimport.service.couchbase.integration.POMArtifactFilter"/>
-    <bean id="couchbaseRepository" class="com.boissinot.maven.util.mongoimport.repository.couchbase.CouchbaseRepository">
+    <bean id="pomArtifactFilter"
+          class="com.boissinot.maven.util.mongoimport.service.couchbase.integration.POMArtifactFilter"/>
+    <bean id="couchbaseRepository"
+          class="com.boissinot.maven.util.mongoimport.repository.couchbase.CouchbaseRepository">
         <constructor-arg ref="couchbaseTemplate"/>
     </bean>
 
     <int-stream:stdout-channel-adapter
-            channel="rejectionQueueCouchbase"
+            channel="rejectionCouchbaseChannel"
             append-newline="true"/>
 
-    <int-stream:stdout-channel-adapter
-            channel="errorChannel"
-            append-newline="true"/>
 
 </beans>
