@@ -10,11 +10,17 @@ public class CouchbaseArtifactDocument {
 
     @Id
     private int id;
+
     private String organisation;
+
     private String name;
+
     private String version;
+
     private String status;
+
     private String type;
+
     @Transient
     private String fileExtension;
 
