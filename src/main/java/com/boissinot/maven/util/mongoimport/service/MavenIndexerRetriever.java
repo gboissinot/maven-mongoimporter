@@ -21,24 +21,6 @@ import java.util.List;
  */
 public class MavenIndexerRetriever {
 
-    //    public IndexingContext getMavenIndex2() throws Exception {
-//        PlexusContainer plexusContainer = new DefaultPlexusContainer();
-//        Indexer indexer = plexusContainer.lookup(Indexer.class);
-//
-//        File centralLocalCache = new File("/Users/gregory/Dev/maven-indexer-examples/indexer-example-01/target/central-cache");
-//        File centralIndexDir = new File("/Users/gregory/Dev/maven-indexer-examples/indexer-example-01/target/central-index");
-//
-//        List<IndexCreator> indexers = new ArrayList<IndexCreator>();
-//        indexers.add(plexusContainer.lookup(IndexCreator.class, "min"));
-//        indexers.add(plexusContainer.lookup(IndexCreator.class, "jarContent"));
-//        indexers.add(plexusContainer.lookup(IndexCreator.class, "maven-plugin"));
-//
-//        return indexer.createIndexingContext("central-context", "central", centralLocalCache, centralIndexDir,
-//                "/Users/gregory/Dev/maven-indexer-examples/indexer-example-01/target/central-index", null, true, true, indexers);
-//
-//    }
-
-
     public IndexingContext getMavenIndex(String repoURL) throws Exception {
 
         System.out.println("Fetching from the repo " + repoURL);
@@ -54,8 +36,6 @@ public class MavenIndexerRetriever {
         // Creators we want to use (search for fields it defines)
         List<IndexCreator> indexers = new ArrayList<IndexCreator>();
         indexers.add(plexusContainer.lookup(IndexCreator.class, "min"));
-        indexers.add(plexusContainer.lookup(IndexCreator.class, "jarContent"));
-        indexers.add(plexusContainer.lookup(IndexCreator.class, "maven-plugin"));
 
         // Create context for central repository index
         IndexingContext centralContext = indexer.createIndexingContext("central-context", "central", centralLocalCache, centralIndexDir,
@@ -97,9 +77,7 @@ public class MavenIndexerRetriever {
         }
 
         System.out.println();
-
-
         return centralContext;
-
     }
+
 }
