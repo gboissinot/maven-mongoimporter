@@ -21,23 +21,31 @@ public class MetadataArtifactTransformer {
     @Transformer
     @SuppressWarnings("unused")
     public MongoDBArtifactDocument addMetadataFromCahe(MongoDBArtifactDocument artifactObj) {
-        Query query = new Query();
 
-        //query.setKey(ComplexKey.of("1"));
-        query.setKey(ComplexKey.of(
+        //queryIsSources
+        Query queryIsSources = new Query();
+        queryIsSources.setKey(ComplexKey.of(
                 artifactObj.getOrganisation(),
                 artifactObj.getName(),
                 artifactObj.getVersion(),
                 artifactObj.getStatus(),
                 "sources"));
-        //query.setIncludeDocs(true);
-        //query.setDebug(true);
-
-        //System.out.println("QUERY:" + query);
-
-        ViewResponse viewResponse = couchbaseTemplate.queryView("artifact", "ArtifactView", query);
-        if (viewResponse.size() != 0) {
+        ViewResponse viewResponseIsSources = couchbaseTemplate.queryView("artifact", "ArtifactView", queryIsSources);
+        if (viewResponseIsSources.size() != 0) {
             artifactObj.setSourcesExists(true);
+        }
+
+        //queryIsJavaDocs
+        Query queryIsJavaDocs = new Query();
+        queryIsJavaDocs.setKey(ComplexKey.of(
+                artifactObj.getOrganisation(),
+                artifactObj.getName(),
+                artifactObj.getVersion(),
+                artifactObj.getStatus(),
+                "javadoc"));
+        ViewResponse viewResponseIsJavadocs = couchbaseTemplate.queryView("artifact", "ArtifactView", queryIsJavaDocs);
+        if (viewResponseIsJavadocs.size() != 0) {
+            artifactObj.setJavaDocExists(true);
         }
 
         return artifactObj;
