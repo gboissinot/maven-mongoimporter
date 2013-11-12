@@ -173,6 +173,27 @@
 
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>couchbase</id>
+            <name>Couchbase Maven Repository</name>
+            <layout>default</layout>
+            <url>http://files.couchbase.com/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>springsource-release</id>
+            <name>SpringSource Release Repository</name>
+            <url>http://repo.springsource.org/release</url>
+        </repository>
+        <repository>
+            <id>springsource-milestone</id>
+            <name>SpringSource Milestone Repository</name>
+            <url>http://repo.springsource.org/milestone</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
