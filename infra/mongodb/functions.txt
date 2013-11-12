@@ -1,19 +1,4 @@
-var map_count= function (){
- var key = {
-    org: this.org,
-    name: this.name,
-    type: this.type,
-    status: this.status
- };
- emit (key , {count:1})
-}
-var reduce_sum = function(key, values){
-     var sum=0;
-     values.forEach(function(value) { sum += value['count']; })
-     return {count:sum};
- }
-
-var map_version= function (){
+var map_function_version= function (){
  var key = {
     org: this.org,
     name: this.name,
@@ -23,6 +8,31 @@ var map_version= function (){
  emit (key , this.version)
 }
 
-var reduce_version = function(key, values){
-    return {count:1};
+var reduce_function_version = function(key, values){
+     var maxVersion="";
+     values.forEach(
+        function(value) {
+             var valVersion=value;
+             valVersionTab = valVersion.split(".");
+             var newTab = []
+             while (newTab.length!=3) {
+             	 if (valVersionTab .length != 0) {
+                    newTab.push(valVersionTab.shift());
+             	 } else {
+                    newTab.push("0");
+                 }
+             }
+             var normailizedVersion = newTab.join(".");
+             if (normailizedVersion > maxVersion) {
+                 maxVersion = normailizedVersion;
+             }
+        }
+     )
+     return maxVersion;
 }
+
+
+db.artifacts.mapReduce(map_function_version,reduce_function_version,{ out: "latest_artifacts" })
+
+db.artifacts.find({org:"wicket",name:"wicket-extensions"},{version:1}).pretty()
+db.latest_artifacts.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASE"}}).pretty()
