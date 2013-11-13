@@ -22,7 +22,6 @@ public class AppMain {
         }
 
         String command = args[0];
-
         if ("cache".equals(command)) {
             CouchbaseCacheService couchbaseCacheService = applicationContext.getBean(CouchbaseCacheService.class);
             couchbaseCacheService.cacheArtifacts();
