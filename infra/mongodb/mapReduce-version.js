@@ -9,14 +9,19 @@ var map_function_version= function (){
 }
 
 var reduce_function_version = function(key, values){
+
      var maxVersion="";
+     var nbElementsMaxVersion=0;
+
      values.forEach(
         function(value) {
+             var countElements = 0;
              var valVersion=value;
              valVersionTab = valVersion.split(".");
              var newTab = []
              while (newTab.length!=3) {
              	 if (valVersionTab .length != 0) {
+                    countElements++;
                     newTab.push(valVersionTab.shift());
              	 } else {
                     newTab.push("0");
@@ -24,15 +29,16 @@ var reduce_function_version = function(key, values){
              }
              var normailizedVersion = newTab.join(".");
              if (normailizedVersion > maxVersion) {
+                 nbElementsMaxVersion = countElements;
                  maxVersion = normailizedVersion;
              }
         }
-     )
-     return maxVersion;
+     );
+
+     var maxVersionTab = maxVersion.split(".");
+     while (maxVersionTab.length != nbElementsMaxVersion){
+         maxVersionTab.shift();
+     }
+
+     return maxVersionTab.join(".");
 }
-
-
-db.artifacts.mapReduce(map_function_version,reduce_function_version,{ out: "latest_artifacts" })
-
-db.artifacts.find({org:"wicket",name:"wicket-extensions"},{version:1}).pretty()
-db.latest_artifacts.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASE"}}).pretty()
