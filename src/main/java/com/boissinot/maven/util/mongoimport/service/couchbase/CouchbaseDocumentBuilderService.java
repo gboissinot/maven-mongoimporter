@@ -10,7 +10,7 @@ public class CouchbaseDocumentBuilderService {
 
     public CouchbaseArtifactDocument buildArtifactObj(ArtifactInfo artifactInfo, int numIndex) {
         CouchbaseArtifactDocument couchbaseArtifactObj = new CouchbaseArtifactDocument();
-        couchbaseArtifactObj.setId(numIndex);
+        couchbaseArtifactObj.setId(artifactInfo.hashCode());
         couchbaseArtifactObj.setOrganisation(artifactInfo.groupId);
         couchbaseArtifactObj.setName(artifactInfo.artifactId);
         couchbaseArtifactObj.setVersion(artifactInfo.version);
