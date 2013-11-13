@@ -21,12 +21,12 @@ public class CouchbaseDocumentBuilderService {
 
         CouchbaseArtifactDocument couchbaseArtifactDocument = new CouchbaseArtifactDocument();
         couchbaseArtifactDocument.setId(mavenArtifactDocument.hashCode());
-        mavenArtifactDocument.setOrganisation(mavenArtifactDocument.getOrganisation());
-        mavenArtifactDocument.setName(mavenArtifactDocument.getName());
-        mavenArtifactDocument.setVersion(mavenArtifactDocument.getVersion());
-        mavenArtifactDocument.setType(mavenArtifactDocument.getType());
-        mavenArtifactDocument.setStatus(mavenArtifactDocument.getStatus());
-        mavenArtifactDocument.setFileExtension(mavenArtifactDocument.getFileExtension());
+        couchbaseArtifactDocument.setOrganisation(mavenArtifactDocument.getOrganisation());
+        couchbaseArtifactDocument.setName(mavenArtifactDocument.getName());
+        couchbaseArtifactDocument.setVersion(mavenArtifactDocument.getVersion());
+        couchbaseArtifactDocument.setType(mavenArtifactDocument.getType());
+        couchbaseArtifactDocument.setStatus(mavenArtifactDocument.getStatus());
+        couchbaseArtifactDocument.setFileExtension(mavenArtifactDocument.getFileExtension());
 
         return couchbaseArtifactDocument;
     }
