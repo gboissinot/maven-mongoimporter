@@ -1,6 +1,8 @@
 package com.boissinot.maven.util.mongoimport.service.couchbase;
 
 import com.boissinot.maven.util.mongoimport.domain.couchbase.CouchbaseArtifactDocument;
+import com.boissinot.maven.util.mongoimport.domain.maven.MavenArtifactDocument;
+import com.boissinot.maven.util.mongoimport.service.maven.MavenDocumentBuilderService;
 import org.apache.maven.index.ArtifactInfo;
 
 /**
@@ -8,21 +10,24 @@ import org.apache.maven.index.ArtifactInfo;
  */
 public class CouchbaseDocumentBuilderService {
 
-    public CouchbaseArtifactDocument buildArtifactObj(ArtifactInfo artifactInfo, int numIndex) {
-        CouchbaseArtifactDocument couchbaseArtifactObj = new CouchbaseArtifactDocument();
-        couchbaseArtifactObj.setId(artifactInfo.hashCode());
-        couchbaseArtifactObj.setOrganisation(artifactInfo.groupId);
-        couchbaseArtifactObj.setName(artifactInfo.artifactId);
-        couchbaseArtifactObj.setVersion(artifactInfo.version);
-        final String classifier = artifactInfo.classifier;
-        if (classifier == null) {
-            couchbaseArtifactObj.setType("binary");
-        } else {
-            couchbaseArtifactObj.setType(classifier);
-        }
-        couchbaseArtifactObj.setStatus("RELEASE");
-        couchbaseArtifactObj.setFileExtension(artifactInfo.fextension);
+    private MavenDocumentBuilderService mavenDocumentBuilderService;
 
-        return couchbaseArtifactObj;
+    public CouchbaseDocumentBuilderService(MavenDocumentBuilderService mavenDocumentBuilderService) {
+        this.mavenDocumentBuilderService = mavenDocumentBuilderService;
+    }
+
+    public CouchbaseArtifactDocument buildArtifactObj(ArtifactInfo artifactInfo) {
+        MavenArtifactDocument mavenArtifactDocument = mavenDocumentBuilderService.buildArtifactObj(artifactInfo);
+
+        CouchbaseArtifactDocument couchbaseArtifactDocument = new CouchbaseArtifactDocument();
+        couchbaseArtifactDocument.setId(mavenArtifactDocument.hashCode());
+        mavenArtifactDocument.setOrganisation(mavenArtifactDocument.getOrganisation());
+        mavenArtifactDocument.setName(mavenArtifactDocument.getName());
+        mavenArtifactDocument.setVersion(mavenArtifactDocument.getVersion());
+        mavenArtifactDocument.setType(mavenArtifactDocument.getType());
+        mavenArtifactDocument.setStatus(mavenArtifactDocument.getStatus());
+        mavenArtifactDocument.setFileExtension(mavenArtifactDocument.getFileExtension());
+
+        return couchbaseArtifactDocument;
     }
 }

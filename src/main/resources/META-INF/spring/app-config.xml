@@ -21,17 +21,26 @@
         <constructor-arg name="mongoDBIntegrationService" ref="mongoDBIntegrationService"/>
     </bean>
 
-    <bean id="couchbaseIntegrationService" class="com.boissinot.maven.util.mongoimport.service.couchbase.integration.CouchbaseIntegrationService">
+    <bean id="couchbaseIntegrationService"
+          class="com.boissinot.maven.util.mongoimport.service.couchbase.integration.CouchbaseIntegrationService">
         <constructor-arg name="inputChannel" ref="workingCouchbaseChannel"/>
         <constructor-arg name="builderService">
-            <bean class="com.boissinot.maven.util.mongoimport.service.couchbase.CouchbaseDocumentBuilderService"/>
+            <bean class="com.boissinot.maven.util.mongoimport.service.couchbase.CouchbaseDocumentBuilderService">
+                <constructor-arg name="mavenDocumentBuilderService" ref="mavenDocumentBuilderService"/>
+            </bean>
         </constructor-arg>
     </bean>
 
-    <bean id="mongoDBIntegrationService" class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.MongoDBIntegrationService">
+    <bean id="mavenDocumentBuilderService"
+          class="com.boissinot.maven.util.mongoimport.service.maven.MavenDocumentBuilderService"/>
+
+    <bean id="mongoDBIntegrationService"
+          class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.MongoDBIntegrationService">
         <constructor-arg name="inputChannel" ref="workingMongoDBChannel"/>
         <constructor-arg name="builderService">
-            <bean class="com.boissinot.maven.util.mongoimport.service.mongodb.MongoDBDocumentBuilderService"/>
+            <bean class="com.boissinot.maven.util.mongoimport.service.mongodb.MongoDBDocumentBuilderService">
+                <constructor-arg name="mavenDocumentBuilderService" ref="mavenDocumentBuilderService"/>
+            </bean>
         </constructor-arg>
     </bean>
 

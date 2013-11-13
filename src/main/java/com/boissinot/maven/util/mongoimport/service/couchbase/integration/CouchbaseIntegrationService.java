@@ -34,7 +34,7 @@ public class CouchbaseIntegrationService {
                 String metadata = doc.get("u");
                 if (metadata != null) {
                     final ArtifactInfo ai = IndexUtils.constructArtifactInfo(doc, repoMavenContext);
-                    final CouchbaseArtifactDocument artifactObj = builderService.buildArtifactObj(ai, i);
+                    final CouchbaseArtifactDocument artifactObj = builderService.buildArtifactObj(ai);
                     System.out.println("Inserting in Couchbase ... " + artifactObj);
                     final Message<CouchbaseArtifactDocument> artifactObjMessage =
                             MessageBuilder

@@ -1,6 +1,8 @@
 package com.boissinot.maven.util.mongoimport.service.mongodb;
 
+import com.boissinot.maven.util.mongoimport.domain.maven.MavenArtifactDocument;
 import com.boissinot.maven.util.mongoimport.domain.mongodb.MongoDBArtifactDocument;
+import com.boissinot.maven.util.mongoimport.service.maven.MavenDocumentBuilderService;
 import org.apache.maven.index.ArtifactInfo;
 
 import java.util.Date;
@@ -10,25 +12,29 @@ import java.util.Date;
  */
 public class MongoDBDocumentBuilderService {
 
+    private MavenDocumentBuilderService mavenDocumentBuilderService;
+
+    public MongoDBDocumentBuilderService(MavenDocumentBuilderService mavenDocumentBuilderService) {
+        this.mavenDocumentBuilderService = mavenDocumentBuilderService;
+    }
+
     public MongoDBArtifactDocument buildArtifactObj(ArtifactInfo artifactInfo) {
+
+        MavenArtifactDocument mavenArtifactDocument = mavenDocumentBuilderService.buildArtifactObj(artifactInfo);
+
         MongoDBArtifactDocument mongoDBArtifactObj = new MongoDBArtifactDocument();
-        mongoDBArtifactObj.setOrganisation(artifactInfo.groupId);
-        mongoDBArtifactObj.setName(artifactInfo.artifactId);
-        mongoDBArtifactObj.setVersion(artifactInfo.version);
-        mongoDBArtifactObj.setSha1(artifactInfo.sha1);
-        mongoDBArtifactObj.setMd5(artifactInfo.md5);
-        final String classifier = artifactInfo.classifier;
-        if (classifier == null) {
-            mongoDBArtifactObj.setType("binary");
-        } else {
-            mongoDBArtifactObj.setType(classifier);
-        }
-        mongoDBArtifactObj.setDescription(artifactInfo.description);
-        mongoDBArtifactObj.setCreationDate(new Date(artifactInfo.lastModified));
+        mongoDBArtifactObj.setOrganisation(mavenArtifactDocument.getOrganisation());
+        mongoDBArtifactObj.setName(mavenArtifactDocument.getName());
+        mongoDBArtifactObj.setVersion(mavenArtifactDocument.getVersion());
+        mongoDBArtifactObj.setSha1(mavenArtifactDocument.getSha1());
+        mongoDBArtifactObj.setMd5(mavenArtifactDocument.getMd5());
+        mongoDBArtifactObj.setType(mavenArtifactDocument.getType());
+        mongoDBArtifactObj.setDescription(mavenArtifactDocument.getDescription());
+        mongoDBArtifactObj.setCreationDate(mavenArtifactDocument.getCreationDate());
         mongoDBArtifactObj.setPublicationDate(new Date());
-        mongoDBArtifactObj.setFileSize(artifactInfo.size);
-        mongoDBArtifactObj.setFileExtension(artifactInfo.fextension);
-        mongoDBArtifactObj.setStatus("RELEASE");
+        mongoDBArtifactObj.setFileSize(mavenArtifactDocument.getFileSize());
+        mongoDBArtifactObj.setFileExtension(mavenArtifactDocument.getFileExtension());
+        mongoDBArtifactObj.setStatus(mavenArtifactDocument.getStatus());
         mongoDBArtifactObj.setSourcesExists(false);
         mongoDBArtifactObj.setJavaDocExists(false);
         mongoDBArtifactObj.setFixedVersion(false);
