@@ -1,6 +1,11 @@
 
+//Creation de la collection latest_artifacts
+db.artifacts.mapReduce(map_function_version,reduce_function_version,{ out: "latest_artifacts"})
 
-db.artifacts.mapReduce(map_function_version,reduce_function_version,{ out: "latest_artifacts" })
+//Creation de la collection deprecated_artifacts
+db.artifacts.mapReduce(map_function_version,reduce_function_deprecated,{ out: "deprecated_artifacts", scope:{ reduce_function_version:reduce_function_version } })
 
 db.artifacts.find({org:"wicket",name:"wicket-extensions"},{version:1}).pretty()
 db.latest_artifacts.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASE"}}).pretty()
+
+db.deprecated_artifacts.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASE"}}).pretty()
