@@ -6,8 +6,7 @@ function (doc, meta) {
 
 
 //Bucket Creation
-curl -X POST -u Administrator:admin123 -d name=repoBucket -d ramQuotaMB=200 -d authType=none \
-     -d replicaNumber=0 -d proxyPort=11215 http://localhost:8091/pools/default/buckets
+curl -X POST -u Administrator:admin123 -d name=repoBucket -d ramQuotaMB=200 -d authType=none -d replicaNumber=0 -d proxyPort=11215 http://localhost:8091/pools/default/buckets
 
 //Bucket Destruction
 curl -X DELETE -u Administrator:admin123 http://localhost:8091/pools/default/buckets/repoBucket -v -i
