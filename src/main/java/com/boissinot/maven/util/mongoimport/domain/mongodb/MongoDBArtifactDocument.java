@@ -68,6 +68,9 @@ public class MongoDBArtifactDocument {
     @Order(15)
     private boolean isJavaDocExists;
 
+    @Order(16)
+    private boolean isFixedVersion;
+
     public String getOrganisation() {
         return organisation;
     }
@@ -186,6 +189,14 @@ public class MongoDBArtifactDocument {
 
     public void setJavaDocExists(boolean javaDocExists) {
         isJavaDocExists = javaDocExists;
+    }
+
+    public boolean isFixedVersion() {
+        return isFixedVersion;
+    }
+
+    public void setFixedVersion(boolean fixedVersion) {
+        isFixedVersion = fixedVersion;
     }
 
     @Override

@@ -29,6 +29,9 @@ public class MongoDBDocumentBuilderService {
         mongoDBArtifactObj.setFileSize(artifactInfo.size);
         mongoDBArtifactObj.setFileExtension(artifactInfo.fextension);
         mongoDBArtifactObj.setStatus("RELEASE");
+        mongoDBArtifactObj.setSourcesExists(false);
+        mongoDBArtifactObj.setJavaDocExists(false);
+        mongoDBArtifactObj.setFixedVersion(false);
 
         return mongoDBArtifactObj;
     }
