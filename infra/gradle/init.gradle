@@ -1,0 +1,63 @@
+initscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.mongodb:mongo-java-driver:2.11.3"
+    }
+}
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.ServerAddress;
+
+apply plugin:EnterpriseRepositoryPlugin
+
+class EnterpriseRepositoryPlugin implements Plugin<Gradle> {
+
+    void apply(Gradle gradle) {
+
+
+	MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+	DB db = mongoClient.getDB("repo");
+	DBCollection coll = db.getCollection("latest_artifacts");
+	BasicDBObject idDoc = new BasicDBObject("org","yom")
+                     .append("name","yom")
+                     .append("type","binary")
+                     .append("status","RELEASED");
+	BasicDBObject query = new BasicDBObject("_id", idDoc);
+	DBCursor cursor = coll.find(query);
+	try {
+		while(cursor.hasNext()) {
+       			BasicDBObject doc = cursor.next();
+       			System.out.println(doc.value.version);
+   		}
+	} 
+	finally {
+   		cursor.close();
+	}
+
+
+
+        // ONLY USE ENTERPRISE REPO FOR DEPENDENCIES
+        gradle.allprojects{ project ->
+
+		project.configurations.all {
+    			resolutionStrategy.eachDependency { 
+				DependencyResolveDetails details ->
+        if (details.requested.group == 'junit' && details.requested.name == 'junit' && details.requested.version == 'latest') {
+            details.useVersion '4.8'
+        }
+    }
+}
+
+        
+    }
+}
+}
