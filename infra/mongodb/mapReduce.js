@@ -1,56 +1,68 @@
-var map_function_version= function (){
+var map_function_version = function () {
     var key = {
         org: this.org,
         name: this.name,
         type: this.type,
         status: this.status
     };
-    emit (key , this.version)
+    var value = {
+        version: this.version,
+        isReferenceVersion: this.isReferenceVersion
+
+    };
+    emit(key, value);
 }
 
-var reduce_function_version = function(key, values){
+var reduce_function_version = function(key, values) {
 
-    var maxVersion="";
-    var nbElementsMaxVersion=0;
+    var maxVersionDoc;
+    var curMaxVersionVal = "";
 
     values.forEach(
-        function(value) {
-            var countElements = 0;
-            var valVersion=value;
-            valVersionTab = valVersion.split(".");
-            var newTab = []
-            while (newTab.length!=3) {
-                if (valVersionTab.length != 0) {
-                    countElements++;
-                    newTab.push(valVersionTab.shift());
+        function(curObj) {
+
+            //-- Get current version from values element
+            var curVersionVal = curObj.version;
+
+            //-- Case of isReference version
+            if (curObj.isReferenceVersion) {
+                maxVersionDoc = curObj;
+                return;
+            }
+
+            //-- Compute a new temp version value with threee members x.y.z
+            var initialTemporaryVersionTab = curVersionVal.split(".");
+            var targetTemporaryVersionTab = []
+            while (targetTemporaryVersionTab.length != 3) {
+                if (initialTemporaryVersionTab.length != 0) {
+                    targetTemporaryVersionTab.push(initialTemporaryVersionTab.shift());
                 } else {
-                    newTab.push("0");
+                    targetTemporaryVersionTab.push("0");
                 }
             }
-            var normalizedVersion = newTab.join(".");
+            var newCurVersionWithAtLeast3Elts = targetTemporaryVersionTab.join(".");
 
-            if (normalizedVersion.indexOf("-")!=-1){
-                maxVersion = maxVersion+".0";
+            var curMaxVersion2Compare = curMaxVersionVal;
+            //Tip: For version ending with '-', we put a '0' to previous maxVersion
+            if (newCurVersionWithAtLeast3Elts.indexOf("-") != -1) {
+                curMaxVersion2Compare = curMaxVersion2Compare + ".0";
             }
 
-            if (normalizedVersion > maxVersion) {
-                nbElementsMaxVersion = countElements;
-                maxVersion = normalizedVersion;
+            //Comparison: Use String comparison
+            if (newCurVersionWithAtLeast3Elts > curMaxVersion2Compare) {
+                curMaxVersionVal = newCurVersionWithAtLeast3Elts;
+                maxVersionDoc = curObj;
             }
         }
     );
 
-    var maxVersionTab = maxVersion.split(".");
-    while (maxVersionTab.length != nbElementsMaxVersion){
-        maxVersionTab.pop();
-    }
+    return maxVersionDoc;
 
-    return maxVersionTab.join(".");
 }
 
-var reduce_function_deprecated = function(key, values){
+var reduce_function_deprecated = function(key, values) {
 
-    var maxVersionValue = reduce_function_version(key,values);
+    var maxVersionValue = reduce_function_version(key, values);
     var idxElemToRemove = values.indexOf(maxVersionValue);
 
     //- final deprecated versions array of one element
