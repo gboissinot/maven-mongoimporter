@@ -1,6 +1,8 @@
 package com.boissinot.maven.util.mongoimport.service.maven;
 
 import com.boissinot.maven.util.mongoimport.domain.maven.MavenArtifactDocument;
+import com.boissinot.maven.util.mongoimport.domain.maven.MavenArtifactStatus;
+import com.boissinot.maven.util.mongoimport.domain.maven.MavenArtifactType;
 import org.apache.maven.index.ArtifactInfo;
 
 /**
@@ -15,11 +17,11 @@ public class MavenDocumentBuilderService {
         mavenArtifactDocument.setVersion(artifactInfo.version);
         final String classifier = artifactInfo.classifier;
         if (classifier == null) {
-            mavenArtifactDocument.setType("binary");
+            mavenArtifactDocument.setType(MavenArtifactType.BINARY.getType());
         } else {
             mavenArtifactDocument.setType(classifier);
         }
-        mavenArtifactDocument.setStatus("RELEASE");
+        mavenArtifactDocument.setStatus(MavenArtifactStatus.RELEASED.getStatus());
         mavenArtifactDocument.setFileExtension(artifactInfo.fextension);
 
         return mavenArtifactDocument;
