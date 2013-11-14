@@ -1,6 +1,6 @@
 
 // Add a specif index on artifacts collection
-db.artifacts.ensureIndex({org:1,name:1,version:1,type:1,status:1})
+db.artifacts.ensureIndex({org:1,name:1,version:1,type:1,status:1},{unique:true})
 
 //Apply map/reduce version on artifacts collection, output is latest_artifacts collection
 db.artifacts.mapReduce(map_function_version,reduce_function_version,{ out: "latest_artifacts"})
@@ -14,5 +14,6 @@ db.latest_artifacts.find({_id:{org:"wicket",name:"wicket-extensions",type:"binar
 db.deprecated_artifacts.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASE"}}).pretty()
 
 //Update samples
-
 db.artifacts.update({org:"wicket",name:"wicket-extensions", type:"binary", status:"RELEASE", version:"1.2.1"},{$set:{isFixedVersion:true}})
+
+./mongoexport --db repo --collection latest_artifacts --fields _id.org,_id.name,value.version --csv
