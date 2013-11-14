@@ -1,0 +1,30 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.mongodb:mongo-java-driver:2.11.3"
+    }
+}
+
+import com.mongodb.BasicDBObject
+import com.mongodb.DB
+import com.mongodb.DBCollection
+import com.mongodb.MongoClient
+
+task mongo << {
+    MongoClient mongoClient = new MongoClient("localhost", 27017);
+    DB db = mongoClient.getDB("repo");
+    DBCollection coll = db.getCollection("latest_artifacts");
+    BasicDBObject idDoc = new BasicDBObject("org", "yom").append("name", "yom").append("type", "binary").append("status", "RELEASED");
+    BasicDBObject query = new BasicDBObject("_id", idDoc);
+    cursor = coll.find(query);
+    try {
+        while (cursor.hasNext()) {
+            BasicDBObject doc = cursor.next();
+            System.out.println(doc.value.version);
+        }
+    } finally {
+        cursor.close();
+    }
+}
