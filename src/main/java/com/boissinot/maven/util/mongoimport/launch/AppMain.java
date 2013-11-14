@@ -12,9 +12,6 @@ public class AppMain {
     public static void main(String[] args) throws Exception {
 
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
-        applicationContext.getEnvironment().setActiveProfiles("remote");
-        applicationContext.register(JavaConfig.class);
-        applicationContext.refresh();
 
         if (args.length == 0) {
             System.out.println("Specify command with 'cache' or 'persist'");
@@ -23,9 +20,17 @@ public class AppMain {
 
         String command = args[0];
         if ("cache".equals(command)) {
+            applicationContext.getEnvironment().setActiveProfiles("couchbase");
+            applicationContext.register(JavaConfig.class);
+            applicationContext.refresh();
+
             CouchbaseCacheService couchbaseCacheService = applicationContext.getBean(CouchbaseCacheService.class);
             couchbaseCacheService.cacheArtifacts();
         } else {
+            applicationContext.getEnvironment().setActiveProfiles("couchbase,mongodb");
+            applicationContext.register(JavaConfig.class);
+            applicationContext.refresh();
+
             MongoImportService mongoImportService = applicationContext.getBean(MongoImportService.class);
             mongoImportService.importArtifacts();
         }

@@ -11,30 +11,36 @@
         http://www.springframework.org/schema/integration/mongodb
         http://www.springframework.org/schema/integration/mongodb/spring-integration-mongodb.xsd
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <int:channel id="workingMongoDBChannel">
-        <int:dispatcher task-executor="poolThreadMongoDB"/>
-    </int:channel>
+    <beans profile="mongodb">
 
-    <int:chain input-channel="workingMongoDBChannel">
-        <int:filter ref="binaryArtifactFilter"/>
-        <int:transformer expression="@thirdPartyArtifactEnricher.enrich(payload, headers['repo.url'])"/>
-        <int:transformer ref="metadataArtifactTransformer"/>
-        <int-mongo:outbound-channel-adapter
-                mongo-converter="mappingConverter"
-                mongodb-factory="mongoDbFactory"
-                collection-name="artifacts"/>
-    </int:chain>
-    <task:executor id="poolThreadMongoDB" pool-size="10"/>
+        <int:channel id="workingMongoDBChannel">
+            <int:dispatcher task-executor="poolThreadMongoDB"/>
+        </int:channel>
 
-    <bean id="binaryArtifactFilter"
-          class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.BinaryArtifactFilter"/>
-    <bean id="thirdPartyArtifactEnricher"
-          class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.ThirdPartyArtifactEnricher"/>
-    <bean id="metadataArtifactTransformer"
-          class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.MetadataArtifactTransformer">
-        <constructor-arg name="couchbaseTemplate" ref="couchbaseTemplate"/>
-    </bean>
+        <int:chain input-channel="workingMongoDBChannel">
+            <int:filter ref="binaryArtifactFilter"/>
+            <int:transformer expression="@thirdPartyArtifactEnricher.enrich(payload, headers['repo.url'])"/>
+            <int:transformer ref="metadataArtifactTransformer"/>
+            <int-mongo:outbound-channel-adapter
+                    mongo-converter="mappingConverter"
+                    mongodb-factory="mongoDbFactory"
+                    collection-name="artifacts"/>
+        </int:chain>
+        <task:executor id="poolThreadMongoDB" pool-size="10"/>
 
+        <bean id="binaryArtifactFilter"
+              class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.BinaryArtifactFilter"/>
+        <bean id="thirdPartyArtifactEnricher"
+              class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.ThirdPartyArtifactEnricher"/>
+    </beans>
+
+    <beans profile="couchbase">
+        <bean id="metadataArtifactTransformer"
+              class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.MetadataArtifactTransformer">
+            <constructor-arg name="couchbaseTemplate" ref="couchbaseTemplate"/>
+        </bean>
+
+    </beans>
 </beans>
