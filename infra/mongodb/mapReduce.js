@@ -60,6 +60,7 @@ var reduce_function_version = function(key, values) {
 
 }
 
+
 var reduce_function_deprecated = function(key, values) {
 
     var maxVersionValue = reduce_function_version(key, values);
