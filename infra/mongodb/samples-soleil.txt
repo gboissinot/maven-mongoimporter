@@ -10,21 +10,22 @@ db.deprecated_artifacts.find({_id:{org:"fr.esrf.tango", name:"TangORB",type:"bin
 
 
 
-//Set isReferenceVersion
-db.artifacts.update({org:"fr.esrf.tango",name:"TangORB", type:"binary", status:"RELEASED", version:"6.1.0"},{$set:{isReferenceVersion:true}})
+//Set isForce
+db.artifacts.update({org:"fr.esrf.tango",name:"TangORB", type:"binary", status:"RELEASED", version:"6.1.0"},{$set:{isForce:true}})
 
 
-//Unset isReferenceVersion
-db.artifacts.update({org:"fr.esrf.tango",name:"TangORB", type:"binary", status:"RELEASED"},{$set:{isReferenceVersion:false}}, false, true)
+//Unset isForce
+db.artifacts.update({org:"fr.esrf.tango",name:"TangORB", type:"binary", status:"RELEASED"},{$set:{isForce:false}}, false, true)
 
 
 db.artifacts.remove({org:"test", name:"test", type:"binary", status:"RELEASED"})
-db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.10", isReferenceVersion:false})
-db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.8", isReferenceVersion:false})
-db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.6", isReferenceVersion:false})
-db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.12", isReferenceVersion:false})
-db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.4", isReferenceVersion:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.10", isForce:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.8", isForce:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.6", isForce:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.12", isForce:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.4", isForce:false})
+db.artifacts.update({org:"test", type:"binary", status:"RELEASED", version:"3.8"},{$set:{isForce:true}})
 
 db.artifacts.find({org:"test", name:"test"}).pretty()
 db.latest_artifacts.find({_id:{org:"test", name:"test",type:"binary",status:"RELEASED"}}).pretty()
-
+db.deprecated_artifacts.find({_id:{org:"test", name:"test",type:"binary",status:"RELEASED"}}).pretty()
