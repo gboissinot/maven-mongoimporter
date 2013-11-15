@@ -37,7 +37,7 @@ public class MongoDBDocumentBuilderService {
         mongoDBArtifactObj.setStatus(mavenArtifactDocument.getStatus());
         mongoDBArtifactObj.setSourcesExists(false);
         mongoDBArtifactObj.setJavaDocExists(false);
-        mongoDBArtifactObj.setForcedVersion(false);
+        mongoDBArtifactObj.setForce(false);
 
         return mongoDBArtifactObj;
     }
