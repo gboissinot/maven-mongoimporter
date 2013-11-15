@@ -1,0 +1,30 @@
+db.artifacts.find({org:"fr.esrf.tango", name:"TangORB"}).pretty()
+
+
+//LATEST ARTIFACTS
+db.latest_artifacts.find({_id:{org:"fr.esrf.tango", name:"TangORB",type:"binary",status:"RELEASED"}}).pretty()
+
+
+//DEPRECTAED ARTIFACTS
+db.deprecated_artifacts.find({_id:{org:"fr.esrf.tango", name:"TangORB",type:"binary",status:"RELEASED"}}).pretty()
+
+
+
+//Set isReferenceVersion
+db.artifacts.update({org:"fr.esrf.tango",name:"TangORB", type:"binary", status:"RELEASED", version:"6.1.0"},{$set:{isReferenceVersion:true}})
+
+
+//Unset isReferenceVersion
+db.artifacts.update({org:"fr.esrf.tango",name:"TangORB", type:"binary", status:"RELEASED"},{$set:{isReferenceVersion:false}}, false, true)
+
+
+db.artifacts.remove({org:"test", name:"test", type:"binary", status:"RELEASED"})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.10", isReferenceVersion:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.8", isReferenceVersion:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.6", isReferenceVersion:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.12", isReferenceVersion:false})
+db.artifacts.insert({org:"test", name:"test", type:"binary", status:"RELEASED", version:"3.4", isReferenceVersion:false})
+
+db.artifacts.find({org:"test", name:"test"}).pretty()
+db.latest_artifacts.find({_id:{org:"test", name:"test",type:"binary",status:"RELEASED"}}).pretty()
+
