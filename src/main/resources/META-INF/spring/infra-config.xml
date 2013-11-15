@@ -15,6 +15,8 @@
     <context:property-placeholder properties-ref="configProps"/>
 
     <beans profile="couchbase">
+        <util:properties id="configProps" location="config/remote/infra.properties"/>
+
         <bean id="couchbaseClient" class="com.couchbase.client.CouchbaseClient">
             <constructor-arg name="baseList">
                 <list>
@@ -52,6 +54,10 @@
     <!--</beans>-->
 
     <beans profile="mongodb">
+
+        <util:properties id="configProps" location="config/remote/infra.properties"/>
+
+
         <mongo:mapping-converter id="mappingConverter">
             <mongo:custom-converters>
                 <mongo:converter>
@@ -61,7 +67,6 @@
         </mongo:mapping-converter>
 
 
-        <util:properties id="configProps" location="config/remote/infra.properties"/>
 
         <mongo:mongo host="${mongodb.host}" port="${mongodb.port}"/>
 
