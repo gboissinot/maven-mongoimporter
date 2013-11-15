@@ -14,55 +14,59 @@
 
     <context:property-placeholder properties-ref="configProps"/>
 
-    <mongo:mapping-converter id="mappingConverter">
-        <mongo:custom-converters>
-            <mongo:converter>
-                <bean class="com.boissinot.maven.util.mongoimport.service.mongodb.MongoArtifactWriterConverter"/>
-            </mongo:converter>
-        </mongo:custom-converters>
-    </mongo:mapping-converter>
-
-
-    <bean id="couchbaseClient" class="com.couchbase.client.CouchbaseClient">
-        <constructor-arg name="baseList">
-            <list>
-                <bean id="firstURI" class="java.net.URI">
-                    <constructor-arg value="${couchbase.pool.url}"/>
-                </bean>
-            </list>
-        </constructor-arg>
-        <constructor-arg name="bucketName" value="${couchbase.bucketName}"/>
-        <constructor-arg name="pwd" value="${couchbase.pwd}"/>
-    </bean>
-
-    <bean id="couchbaseTemplate" class="org.springframework.data.couchbase.core.CouchbaseTemplate">
-        <constructor-arg ref="couchbaseClient"/>
-    </bean>
-
-    <beans profile="local">
-
-        <util:properties id="configProps" location="config/local/infra.properties"/>
-
-        <bean id="fongo" class="com.foursquare.fongo.Fongo">
-            <constructor-arg value="InMemoryMongo"/>
-        </bean>
-        <bean id="mongo" factory-bean="fongo" factory-method="getMongo"/>
-
-        <bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
-            <constructor-arg name="mongo" ref="mongo"/>
-            <constructor-arg name="databaseName" value="${mongodb.databaseName}"/>
+    <beans profile="couchbase">
+        <bean id="couchbaseClient" class="com.couchbase.client.CouchbaseClient">
+            <constructor-arg name="baseList">
+                <list>
+                    <bean id="firstURI" class="java.net.URI">
+                        <constructor-arg value="${couchbase.pool.url}"/>
+                    </bean>
+                </list>
+            </constructor-arg>
+            <constructor-arg name="bucketName" value="${couchbase.bucketName}"/>
+            <constructor-arg name="pwd" value="${couchbase.pwd}"/>
         </bean>
 
-        <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-            <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-            <constructor-arg name="mongoConverter" ref="mappingConverter"/>
+        <bean id="couchbaseTemplate" class="org.springframework.data.couchbase.core.CouchbaseTemplate">
+            <constructor-arg ref="couchbaseClient"/>
         </bean>
     </beans>
+    <!--<beans profile="local">-->
 
-    <beans profile="remote">
+    <!--<util:properties id="configProps" location="config/local/infra.properties"/>-->
+
+    <!--<bean id="fongo" class="com.foursquare.fongo.Fongo">-->
+    <!--<constructor-arg value="InMemoryMongo"/>-->
+    <!--</bean>-->
+    <!--<bean id="mongo" factory-bean="fongo" factory-method="getMongo"/>-->
+
+    <!--<bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">-->
+    <!--<constructor-arg name="mongo" ref="mongo"/>-->
+    <!--<constructor-arg name="databaseName" value="${mongodb.databaseName}"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+    <!--<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>-->
+    <!--<constructor-arg name="mongoConverter" ref="mappingConverter"/>-->
+    <!--</bean>-->
+    <!--</beans>-->
+
+    <beans profile="mongodb">
+        <mongo:mapping-converter id="mappingConverter">
+            <mongo:custom-converters>
+                <mongo:converter>
+                    <bean class="com.boissinot.maven.util.mongoimport.service.mongodb.MongoArtifactWriterConverter"/>
+                </mongo:converter>
+            </mongo:custom-converters>
+        </mongo:mapping-converter>
+
+
         <util:properties id="configProps" location="config/remote/infra.properties"/>
+
         <mongo:mongo host="${mongodb.host}" port="${mongodb.port}"/>
+
         <mongo:db-factory id="mongoDbFactory" mongo-ref="mongo" dbname="${mongodb.databaseName}"/>
+
         <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
             <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
             <constructor-arg name="mongoConverter" ref="mappingConverter"/>

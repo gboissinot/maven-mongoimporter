@@ -69,7 +69,7 @@ public class MongoDBArtifactDocument {
     private boolean isJavaDocExists;
 
     @Order(16)
-    private boolean isFixedVersion;
+    private boolean isReferenceVersion;
 
     public String getOrganisation() {
         return organisation;
@@ -191,12 +191,12 @@ public class MongoDBArtifactDocument {
         isJavaDocExists = javaDocExists;
     }
 
-    public boolean isFixedVersion() {
-        return isFixedVersion;
+    public boolean isReferenceVersion() {
+        return isReferenceVersion;
     }
 
-    public void setFixedVersion(boolean fixedVersion) {
-        isFixedVersion = fixedVersion;
+    public void setReferenceVersion(boolean referenceVersion) {
+        isReferenceVersion = referenceVersion;
     }
 
     @Override
