@@ -15,7 +15,7 @@ import com.mongodb.MongoClient
 task mongo << {
     MongoClient mongoClient = new MongoClient("localhost", 27017);
     DB db = mongoClient.getDB("repo");
-    DBCollection coll = db.getCollection("latest_artifacts");
+    DBCollection coll = db.getCollection("artifacts.latest");
     BasicDBObject idDoc = new BasicDBObject("org", "yom").append("name", "yom").append("type", "binary").append("status", "RELEASED");
     BasicDBObject query = new BasicDBObject("_id", idDoc);
     cursor = coll.find(query);

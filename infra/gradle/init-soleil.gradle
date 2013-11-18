@@ -24,7 +24,7 @@ class EnterpriseRepositoryPlugin implements Plugin<Gradle> {
 
         MongoClient mongoClient = new MongoClient("localhost", 27017);
         DB db = mongoClient.getDB("repo");
-        DBCollection coll = db.getCollection("latest_artifacts");
+        DBCollection coll = db.getCollection("artifacts.latest");
         BasicDBObject idDoc = new BasicDBObject("org", "fr.esrf.tango")
                 .append("name", "TangORB")
                 .append("type", "binary")

@@ -2,18 +2,18 @@
 // Add a specif index on artifacts collection
 db.artifacts.ensureIndex({org:1,name:1,version:1,type:1,status:1},{unique:true})
 
-//Apply map/reduce version on artifacts collection, output is latest_artifacts collection
-db.artifacts.mapReduce(map_version_function,reduce_latestversion_function,{ out: "latest_artifacts", scope:{ version_compare:version_compare }})
+//Apply map/reduce version on artifacts collection, output is artifacts.latest collection
+db.artifacts.mapReduce(map_version_function,reduce_latestversion_function,{ out: "artifacts.latest", scope:{ version_compare:version_compare }, finalize:finalize_function})
 
-//Apply map/reduce deprecated_version on artifacts collection, output is deprecated_artifacts collection
-db.artifacts.mapReduce(map_version_function,reduce_deprecatedversion_function,{ out: "deprecated_artifacts", scope:{  version_compare:version_compare,reduce_latestversion_function:reduce_latestversion_function } })
+//Apply map/reduce deprecated_version on artifacts collection, output is artifacts.deprecated collection
+db.artifacts.mapReduce(map_version_function,reduce_deprecatedversion_function,{ out: "artifacts.deprecated", scope:{  version_compare:version_compare,reduce_latestversion_function:reduce_latestversion_function },finalize:finalize_function })
 
 // Find samples
 db.artifacts.find({org:"wicket",name:"wicket-extensions"},{version:1}).pretty()
-db.latest_artifacts.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASED"}}).pretty()
-db.deprecated_artifacts.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASED"}}).pretty()
+db.artifacts.latest.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASED"}}).pretty()
+db.artifacts.deprecated.find({_id:{org:"wicket",name:"wicket-extensions",type:"binary",status:"RELEASED"}}).pretty()
 
 //Update samples
 db.artifacts.update({org:"wicket",name:"wicket-extensions", type:"binary", status:"RELEASED", version:"1.2.1"},{$set:{isReferenceVersion:true}})
 
-./mongoexport --db repo --collection latest_artifacts --fields _id.org,_id.name,value.version --csv
+./mongoexport --db repo --collection artifacts.latest --fields _id.org,_id.name,value.version --csv

@@ -183,3 +183,12 @@ var reduce_deprecatedversion_function = function (key, values) {
 function finalize_function(key, value){
     return value.version;
 }
+
+
+conn = new Mongo("localhost:27017");
+db = conn.getDB("repo");
+db.artifacts.mapReduce(map_version_function,reduce_latestversion_function,{ out: "latest.artifacts", scope:{ version_compare:version_compare }, finalize:finalize_function})
+var error = db.getLastError()
+if (error)
+    print(error)
+
