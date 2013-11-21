@@ -53,8 +53,8 @@ public class MongoArtifactWriterConverter implements Converter<MongoDBArtifactDo
     }
 
     private class MongoObjElement {
-        private String fieldName;
-        private Object filedValue;
+        private final String fieldName;
+        private final Object filedValue;
 
         private MongoObjElement(String fieldName, Object filedValue) {
             this.fieldName = fieldName;

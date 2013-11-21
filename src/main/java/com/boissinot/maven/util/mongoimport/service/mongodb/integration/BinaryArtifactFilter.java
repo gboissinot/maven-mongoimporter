@@ -12,6 +12,6 @@ public class BinaryArtifactFilter {
     @Filter
     @SuppressWarnings("unused")
     public boolean filteringBinaryArtifacts(MongoDBArtifactDocument artifactObj) {
-        return ("binary".equals(artifactObj.getType())) ? true : false;
+        return ("binary".equals(artifactObj.getType()));
     }
 }

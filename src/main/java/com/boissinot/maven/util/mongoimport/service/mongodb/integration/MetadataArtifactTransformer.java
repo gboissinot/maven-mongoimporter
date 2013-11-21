@@ -12,7 +12,7 @@ import org.springframework.integration.annotation.Transformer;
  */
 public class MetadataArtifactTransformer {
 
-    private CouchbaseTemplate couchbaseTemplate;
+    private final CouchbaseTemplate couchbaseTemplate;
 
     public MetadataArtifactTransformer(CouchbaseTemplate couchbaseTemplate) {
         this.couchbaseTemplate = couchbaseTemplate;

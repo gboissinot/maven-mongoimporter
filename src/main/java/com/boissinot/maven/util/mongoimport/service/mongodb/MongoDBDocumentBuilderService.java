@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class MongoDBDocumentBuilderService {
 
-    private MavenDocumentBuilderService mavenDocumentBuilderService;
+    private final MavenDocumentBuilderService mavenDocumentBuilderService;
 
     public MongoDBDocumentBuilderService(MavenDocumentBuilderService mavenDocumentBuilderService) {
         this.mavenDocumentBuilderService = mavenDocumentBuilderService;

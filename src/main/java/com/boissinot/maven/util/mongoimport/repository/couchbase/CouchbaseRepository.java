@@ -8,7 +8,7 @@ import org.springframework.data.couchbase.core.CouchbaseOperations;
  */
 public class CouchbaseRepository {
 
-    private CouchbaseOperations couchbaseTemplate;
+    private final CouchbaseOperations couchbaseTemplate;
 
     public CouchbaseRepository(CouchbaseOperations couchbaseTemplate) {
         this.couchbaseTemplate = couchbaseTemplate;

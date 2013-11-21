@@ -10,7 +10,7 @@ import org.apache.maven.index.ArtifactInfo;
  */
 public class CouchbaseDocumentBuilderService {
 
-    private MavenDocumentBuilderService mavenDocumentBuilderService;
+    private final MavenDocumentBuilderService mavenDocumentBuilderService;
 
     public CouchbaseDocumentBuilderService(MavenDocumentBuilderService mavenDocumentBuilderService) {
         this.mavenDocumentBuilderService = mavenDocumentBuilderService;

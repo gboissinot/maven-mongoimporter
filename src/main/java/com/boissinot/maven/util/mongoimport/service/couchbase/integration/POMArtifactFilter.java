@@ -11,6 +11,6 @@ public class POMArtifactFilter {
     @Filter
     @SuppressWarnings("unused")
     public boolean isNotPOMArtifact(CouchbaseArtifactDocument artifactObj) {
-        return ("pom".equals(artifactObj.getFileExtension())) ? false : true;
+        return (!"pom".equals(artifactObj.getFileExtension()));
     }
 }

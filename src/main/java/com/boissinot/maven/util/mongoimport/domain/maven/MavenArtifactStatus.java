@@ -14,7 +14,7 @@ public enum MavenArtifactStatus {
         this.status = status;
     }
 
-    private String status;
+    private final String status;
 
     public String getStatus() {
         return status;

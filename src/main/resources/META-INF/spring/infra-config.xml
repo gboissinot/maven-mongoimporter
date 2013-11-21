@@ -33,30 +33,10 @@
             <constructor-arg ref="couchbaseClient"/>
         </bean>
     </beans>
-    <!--<beans profile="local">-->
-
-    <!--<util:properties id="configProps" location="config/local/infra.properties"/>-->
-
-    <!--<bean id="fongo" class="com.foursquare.fongo.Fongo">-->
-    <!--<constructor-arg value="InMemoryMongo"/>-->
-    <!--</bean>-->
-    <!--<bean id="mongo" factory-bean="fongo" factory-method="getMongo"/>-->
-
-    <!--<bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">-->
-    <!--<constructor-arg name="mongo" ref="mongo"/>-->
-    <!--<constructor-arg name="databaseName" value="${mongodb.databaseName}"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
-    <!--<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>-->
-    <!--<constructor-arg name="mongoConverter" ref="mappingConverter"/>-->
-    <!--</bean>-->
-    <!--</beans>-->
 
     <beans profile="mongodb">
 
         <util:properties id="configProps" location="config/remote/infra.properties"/>
-
 
         <mongo:mapping-converter id="mappingConverter">
             <mongo:custom-converters>
@@ -65,8 +45,6 @@
                 </mongo:converter>
             </mongo:custom-converters>
         </mongo:mapping-converter>
-
-
 
         <mongo:mongo host="${mongodb.host}" port="${mongodb.port}"/>
 

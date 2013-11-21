@@ -9,7 +9,7 @@ public enum MavenArtifactType {
     SOURCES("sources"),
     JAVADOC("javadoc");
 
-    private String type;
+    private final String type;
 
     MavenArtifactType(String type) {
         this.type = type;
