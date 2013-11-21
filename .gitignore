@@ -5,5 +5,3 @@ target
 *.ipr
 *.iws
 *.iml
-work
-/bin
