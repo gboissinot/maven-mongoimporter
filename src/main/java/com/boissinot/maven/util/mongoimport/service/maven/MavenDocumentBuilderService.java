@@ -21,7 +21,7 @@ public class MavenDocumentBuilderService {
         } else {
             mavenArtifactDocument.setType(classifier);
         }
-        mavenArtifactDocument.setStatus(MavenArtifactStatus.RELEASED.getStatus());
+        mavenArtifactDocument.setStatus(MavenArtifactStatus.DELIVERED_RELEASE.getStatus());
         mavenArtifactDocument.setFileExtension(artifactInfo.fextension);
 
         return mavenArtifactDocument;
