@@ -8,7 +8,6 @@ import org.springframework.integration.annotation.Filter;
  */
 public class BinaryArtifactFilter {
 
-
     @Filter
     @SuppressWarnings("unused")
     public boolean filteringBinaryArtifacts(MongoDBArtifactDocument artifactObj) {
