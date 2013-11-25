@@ -6,8 +6,8 @@ package com.boissinot.maven.util.mongoimport.domain.maven;
 public enum MavenArtifactStatus {
 
     BUILT("BUILT"),
-    TESTED("TESTED"),
-    RELEASED("RELEASED"),
+    DELIVERED_INTEGRATION("DELIVERED_INTEGRATION"),
+    DELIVERED_RELEASE("DELIVERED_RELEASE"),
     CLOSED("CLOSED");
 
     private MavenArtifactStatus(String status) {
