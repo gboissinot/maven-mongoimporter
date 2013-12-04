@@ -2,7 +2,10 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'maven-publish'
 
-version = "1.0.0"
+version = "1.0.1"
+
+sourceCompatibility=1.5
+targetCompatibility=1.5
 
 repositories {
     mavenCentral()
@@ -58,6 +61,7 @@ dependencies {
     compile "org.sonatype.sisu:sisu-inject-plexus:2.1.1"
     compile "cglib:cglib-nodep:2.2.2"
 }
+
 
 
 publishing {
