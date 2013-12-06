@@ -44,7 +44,7 @@ public class MongoArtifactWriterConverter implements Converter<MongoDBArtifactDo
             for (Map.Entry<Integer, MongoObjElement> elementEntry : elementsMap.entrySet()) {
                 MongoObjElement mongoObjElement = elementEntry.getValue();
                 Object filedValue = mongoObjElement.filedValue;
-                if (filedValue instanceof MongoDBArtifactDocumentForC){
+                if (filedValue instanceof MongoDBArtifactDocumentForC) {
                     BasicDBObject basicDBObject = new BasicDBObject();
                     final Field[] fieldsBasicDBObject = filedValue.getClass().getDeclaredFields();
                     for (Field field : fieldsBasicDBObject) {
@@ -54,7 +54,7 @@ public class MongoArtifactWriterConverter implements Converter<MongoDBArtifactDo
                     }
                     dbo.put(mongoObjElement.fieldName, basicDBObject);
 
-                }   else {
+                } else {
                     dbo.put(mongoObjElement.fieldName, filedValue);
                 }
             }

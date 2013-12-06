@@ -35,8 +35,6 @@ public class MongoDBDocumentBuilderService {
         mongoDBArtifactObj.setFileSize(mavenArtifactDocument.getFileSize());
         mongoDBArtifactObj.setFileExtension(mavenArtifactDocument.getFileExtension());
         mongoDBArtifactObj.setStatus(mavenArtifactDocument.getStatus());
-        mongoDBArtifactObj.setSourcesExists(false);
-        mongoDBArtifactObj.setJavaDocExists(false);
         mongoDBArtifactObj.setForce(false);
 
         return mongoDBArtifactObj;

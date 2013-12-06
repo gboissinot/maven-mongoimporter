@@ -63,16 +63,15 @@ public class MongoDBArtifactDocument {
     private long fileSize;
 
     @Order(14)
-    private boolean isSourcesExists;
-
-    @Order(15)
-    private boolean isJavaDocExists;
-
-    @Order(16)
     private boolean isForce;
 
-    @Order(17)
-    private MongoDBArtifactDocumentForC cMetadata;
+    @Field("javaMetadata")
+    @Order(15)
+    private MongoDBArtifactDocumentForJava metadataJavaLanguage;
+
+    @Field("cMetadata")
+    @Order(16)
+    private MongoDBArtifactDocumentForC metadataCLanguage;
 
     public String getOrganisation() {
         return organisation;
@@ -178,22 +177,6 @@ public class MongoDBArtifactDocument {
         this.fileSize = fileSize;
     }
 
-    public boolean isSourcesExists() {
-        return isSourcesExists;
-    }
-
-    public void setSourcesExists(boolean sourcesExists) {
-        isSourcesExists = sourcesExists;
-    }
-
-    public boolean isJavaDocExists() {
-        return isJavaDocExists;
-    }
-
-    public void setJavaDocExists(boolean javaDocExists) {
-        isJavaDocExists = javaDocExists;
-    }
-
     public boolean isForce() {
         return isForce;
     }
@@ -202,12 +185,20 @@ public class MongoDBArtifactDocument {
         isForce = force;
     }
 
-    public MongoDBArtifactDocumentForC getcMetadata() {
-        return cMetadata;
+    public MongoDBArtifactDocumentForJava getMetadataJavaLanguage() {
+        return metadataJavaLanguage;
     }
 
-    public void setcMetadata(MongoDBArtifactDocumentForC cMetadata) {
-        this.cMetadata = cMetadata;
+    public void setMetadataJavaLanguage(MongoDBArtifactDocumentForJava metadataJavaLanguage) {
+        this.metadataJavaLanguage = metadataJavaLanguage;
+    }
+
+    public MongoDBArtifactDocumentForC getMetadataCLanguage() {
+        return metadataCLanguage;
+    }
+
+    public void setMetadataCLanguage(MongoDBArtifactDocumentForC metadataCLanguage) {
+        this.metadataCLanguage = metadataCLanguage;
     }
 
     @Override
