@@ -27,7 +27,7 @@ public class AppMain {
             CouchbaseCacheService couchbaseCacheService = applicationContext.getBean(CouchbaseCacheService.class);
             couchbaseCacheService.cacheArtifacts();
         } else {
-            applicationContext.getEnvironment().setActiveProfiles("couchbase", "mongodb");
+            applicationContext.getEnvironment().setActiveProfiles("mongodb");
             applicationContext.register(JavaConfig.class);
             applicationContext.refresh();
 

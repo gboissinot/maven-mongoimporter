@@ -22,7 +22,8 @@
         <int:chain input-channel="workingMongoDBChannel">
             <int:filter ref="binaryArtifactFilter"/>
             <int:transformer expression="@thirdPartyArtifactEnricher.enrich(payload, headers['repo.url'])"/>
-            <int:transformer ref="metadataArtifactTransformer"/>
+            <!--<int:transformer ref="metadataArtifactFromCacheTransformer"/>-->
+            <int:transformer expression="@cLanguageArtifactTransformer.addCMetadata(payload, headers['repo.url'])"/>
             <int-mongo:outbound-channel-adapter
                     mongo-converter="mappingConverter"
                     mongodb-factory="mongoDbFactory"
@@ -34,11 +35,16 @@
               class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.BinaryArtifactFilter"/>
         <bean id="thirdPartyArtifactEnricher"
               class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.ThirdPartyArtifactEnricher"/>
+
+        <bean id="cLanguageArtifactTransformer"
+              class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.CLanguageArtifactTransformer"/>
+
+
     </beans>
 
     <beans profile="couchbase">
-        <bean id="metadataArtifactTransformer"
-              class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.MetadataArtifactTransformer">
+        <bean id="metadataArtifactFromCacheTransformer"
+              class="com.boissinot.maven.util.mongoimport.service.mongodb.integration.MetadataArtifactFromCacheTransformer">
             <constructor-arg name="couchbaseTemplate" ref="couchbaseTemplate"/>
         </bean>
 

@@ -71,6 +71,9 @@ public class MongoDBArtifactDocument {
     @Order(16)
     private boolean isForce;
 
+    @Order(17)
+    private MongoDBArtifactDocumentForC cMetadata;
+
     public String getOrganisation() {
         return organisation;
     }
@@ -197,6 +200,14 @@ public class MongoDBArtifactDocument {
 
     public void setForce(boolean force) {
         isForce = force;
+    }
+
+    public MongoDBArtifactDocumentForC getcMetadata() {
+        return cMetadata;
+    }
+
+    public void setcMetadata(MongoDBArtifactDocumentForC cMetadata) {
+        this.cMetadata = cMetadata;
     }
 
     @Override

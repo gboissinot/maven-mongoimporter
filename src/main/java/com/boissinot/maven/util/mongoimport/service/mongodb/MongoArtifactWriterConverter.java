@@ -3,6 +3,7 @@ package com.boissinot.maven.util.mongoimport.service.mongodb;
 import com.boissinot.maven.util.mongoimport.domain.Order;
 import com.boissinot.maven.util.mongoimport.domain.Required;
 import com.boissinot.maven.util.mongoimport.domain.mongodb.MongoDBArtifactDocument;
+import com.boissinot.maven.util.mongoimport.domain.mongodb.MongoDBArtifactDocumentForC;
 import com.boissinot.maven.util.mongoimport.exception.MongoImportException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -38,13 +39,27 @@ public class MongoArtifactWriterConverter implements Converter<MongoDBArtifactDo
                 if ((field.getAnnotation(Required.class) != null) || (targetFieldValue != null)) {
                     elementsMap.put(orderFieldNumber, new MongoObjElement(targetFieldName, targetFieldValue));
                 }
-
-                for (Map.Entry<Integer, MongoObjElement> elementEntry : elementsMap.entrySet()) {
-                    MongoObjElement mongoObjElement = elementEntry.getValue();
-                    dbo.put(mongoObjElement.fieldName, mongoObjElement.filedValue);
-                }
-
             }
+
+            for (Map.Entry<Integer, MongoObjElement> elementEntry : elementsMap.entrySet()) {
+                MongoObjElement mongoObjElement = elementEntry.getValue();
+                Object filedValue = mongoObjElement.filedValue;
+                if (filedValue instanceof MongoDBArtifactDocumentForC){
+                    BasicDBObject basicDBObject = new BasicDBObject();
+                    final Field[] fieldsBasicDBObject = filedValue.getClass().getDeclaredFields();
+                    for (Field field : fieldsBasicDBObject) {
+                        field.setAccessible(true);
+                        basicDBObject.put(field.getName(), field.get(filedValue));
+
+                    }
+                    dbo.put(mongoObjElement.fieldName, basicDBObject);
+
+                }   else {
+                    dbo.put(mongoObjElement.fieldName, filedValue);
+                }
+            }
+
+
         } catch (IllegalAccessException iae) {
             throw new MongoImportException(iae);
         }

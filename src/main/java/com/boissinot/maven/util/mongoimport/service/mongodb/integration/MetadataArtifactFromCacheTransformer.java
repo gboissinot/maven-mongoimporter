@@ -10,11 +10,11 @@ import org.springframework.integration.annotation.Transformer;
 /**
  * @author Gregory Boissinot
  */
-public class MetadataArtifactTransformer {
+public class MetadataArtifactFromCacheTransformer {
 
     private final CouchbaseTemplate couchbaseTemplate;
 
-    public MetadataArtifactTransformer(CouchbaseTemplate couchbaseTemplate) {
+    public MetadataArtifactFromCacheTransformer(CouchbaseTemplate couchbaseTemplate) {
         this.couchbaseTemplate = couchbaseTemplate;
     }
 
