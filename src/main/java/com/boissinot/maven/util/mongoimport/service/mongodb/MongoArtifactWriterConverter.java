@@ -4,6 +4,7 @@ import com.boissinot.maven.util.mongoimport.domain.Order;
 import com.boissinot.maven.util.mongoimport.domain.Required;
 import com.boissinot.maven.util.mongoimport.domain.mongodb.MongoDBArtifactDocument;
 import com.boissinot.maven.util.mongoimport.domain.mongodb.MongoDBArtifactDocumentForC;
+import com.boissinot.maven.util.mongoimport.domain.mongodb.MongoDBArtifactDocumentForJava;
 import com.boissinot.maven.util.mongoimport.exception.MongoImportException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -44,13 +45,16 @@ public class MongoArtifactWriterConverter implements Converter<MongoDBArtifactDo
             for (Map.Entry<Integer, MongoObjElement> elementEntry : elementsMap.entrySet()) {
                 MongoObjElement mongoObjElement = elementEntry.getValue();
                 Object filedValue = mongoObjElement.filedValue;
-                if (filedValue instanceof MongoDBArtifactDocumentForC) {
+                if ((filedValue instanceof MongoDBArtifactDocumentForC)
+                        || (filedValue instanceof MongoDBArtifactDocumentForJava)) {
                     BasicDBObject basicDBObject = new BasicDBObject();
                     final Field[] fieldsBasicDBObject = filedValue.getClass().getDeclaredFields();
                     for (Field field : fieldsBasicDBObject) {
                         field.setAccessible(true);
-                        basicDBObject.put(field.getName(), field.get(filedValue));
-
+                        Object val = field.get(filedValue);
+                        if (val != null) {
+                            basicDBObject.put(field.getName(), val);
+                        }
                     }
                     dbo.put(mongoObjElement.fieldName, basicDBObject);
 

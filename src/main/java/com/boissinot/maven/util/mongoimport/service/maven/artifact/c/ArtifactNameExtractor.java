@@ -7,33 +7,39 @@ import com.boissinot.maven.util.mongoimport.domain.maven.MavenCNameElement;
  */
 public class ArtifactNameExtractor {
 
+    public static final String ARTIFACT_NAME_SEPARATOR="-";
+
     public MavenCNameElement extractMetadataFromName(String name) {
 
         if (name == null) {
             throw new NullPointerException("An artifact name is required.");
         }
 
-        final String[] partNames = name.split("-");
-        if (partNames.length >= 8) {
-            String artifactName = partNames[0];
-            String archi = partNames[1];
-            String platform = partNames[2];
-            String compiler = partNames[3];
-            String typeDep = partNames[4];
-            String mod = partNames[5];
+        MavenCNameElement mavenCNameElement = new MavenCNameElement();
+        final String[] partNames = name.split(ARTIFACT_NAME_SEPARATOR);
 
-            String version = partNames[6];
-            String classifier = partNames[7];
+        if ((partNames.length == 5)) {
+            mavenCNameElement.setName(partNames[0]);
+            mavenCNameElement.setArchi(partNames[1]);
+            mavenCNameElement.setPlatform(partNames[2]);
+            mavenCNameElement.setCompiler(partNames[3]);
+            mavenCNameElement.setMod(partNames[4]);
+            return mavenCNameElement;
+        }
 
-            MavenCNameElement mavenCNameElement = new MavenCNameElement();
-            mavenCNameElement.setName(artifactName);
-            mavenCNameElement.setArchi(archi);
-            mavenCNameElement.setPlatform(platform);
-            mavenCNameElement.setCompiler(compiler);
-            mavenCNameElement.setTypeDep(typeDep);
-            mavenCNameElement.setMod(mod);
-            mavenCNameElement.setVersion(version);
-            mavenCNameElement.setClassifier(classifier);
+        if (partNames.length >= 6) {
+            mavenCNameElement.setName(partNames[0]);
+            mavenCNameElement.setArchi(partNames[1]);
+            mavenCNameElement.setPlatform(partNames[2]);
+            mavenCNameElement.setCompiler(partNames[3]);
+            mavenCNameElement.setTypeDep(partNames[4]);
+            mavenCNameElement.setMod(partNames[5]);
+            if (partNames.length >= 8) {
+                String version = partNames[6];
+                String classifier = partNames[7];
+                mavenCNameElement.setVersion(version);
+                mavenCNameElement.setClassifier(classifier);
+            }
             return mavenCNameElement;
         }
 
@@ -43,6 +49,9 @@ public class ArtifactNameExtractor {
 
 
 /*
+
+nxextractor-i386-Linux-gcc-release"
+
 CrashReporting-i386-Linux-gcc-static-release-1.0.3-i386-Linux-g%2B%2B-static.nar
 CrashReporting-i386-Linux-gcc-static-release-1.0.3-noarch.nar
 CrashReporting-i386-Linux-gcc-static-release-1.0.3.pom
