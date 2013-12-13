@@ -7,7 +7,7 @@ import com.boissinot.maven.util.mongoimport.domain.maven.MavenCNameElement;
  */
 public class ArtifactNameExtractor {
 
-    public static final String ARTIFACT_NAME_SEPARATOR="-";
+    public static final String ARTIFACT_NAME_SEPARATOR = "-";
 
     public MavenCNameElement extractMetadataFromName(String name) {
 
