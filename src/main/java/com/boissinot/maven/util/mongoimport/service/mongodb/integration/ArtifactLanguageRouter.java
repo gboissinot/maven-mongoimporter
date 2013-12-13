@@ -10,12 +10,16 @@ public class ArtifactLanguageRouter {
     @Router
     public String nextRoute(String repoUrl) {
 
-        if (repoUrl.contains("java")) {
+        if (repoUrl.contains("java") ) {
             return "java";
         }
 
         if (repoUrl.contains("native")) {
             return "c";
+        }
+
+        if (repoUrl.contains("releases")){
+            return  "java";
         }
 
         return "unknown";
