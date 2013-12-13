@@ -23,18 +23,19 @@ public class CLanguageArtifactTransformer {
 
         if (repoURL.contains("native")) {
             String artifactOriginalName = artifactObj.getName();
-            final MavenCNameElement cNameElement = artifactNameExtractor.extractMetadataFromName(artifactOriginalName);
-            if (cNameElement != null) {
-                MongoDBArtifactDocumentForC artifactDocumentForC
-                        = new MongoDBArtifactDocumentForC(
-                        cNameElement.getArchi(),
-                        cNameElement.getPlatform(),
-                        cNameElement.getCompiler(),
-                        cNameElement.getTypeDep(),
-                        cNameElement.getMod());
-
-                artifactObj.setMetadataCLanguage(artifactDocumentForC);
-                artifactObj.setName(cNameElement.getName());
+            if (!artifactOriginalName.startsWith("super-")) {
+                final MavenCNameElement cNameElement = artifactNameExtractor.extractMetadataFromName(artifactOriginalName);
+                if (cNameElement != null) {
+                    MongoDBArtifactDocumentForC artifactDocumentForC
+                            = new MongoDBArtifactDocumentForC(
+                            cNameElement.getArchi(),
+                            cNameElement.getPlatform(),
+                            cNameElement.getCompiler(),
+                            cNameElement.getTypeDep(),
+                            cNameElement.getMod());
+                    artifactObj.setMetadataCLanguage(artifactDocumentForC);
+                    artifactObj.setName(cNameElement.getName());
+                }
             }
         }
 
